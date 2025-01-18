@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .ticket-info {
+            margin-top: 20px;
+        }
+
+            .ticket-info p {
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+                .ticket-info p strong {
+                    color: #555;
+                }
+
+        .success-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank you for your purchase!</h1>
+        <img src="https://i.postimg.cc/Gm01FkMn/Cinema-Ticket.png" alt="Ticket Success" class="success-image" />
+
+        <div class="ticket-info">
+            <p><strong>Username:</strong> {{UserName}}</p>
+            <p><strong>Email:</strong> {{Email}}</p>
+            <p><strong>Movie Name:</strong> {{HomeTeam}}</p>
+            <p><strong>Cinema:</strong> {{AwayTeam}}</p>
+            <p><strong>Cinema:</strong> {{StadiumName}}</p>
+            <p><strong>Cinema:</strong> {{Location}}</p>
+            <p><strong>Cinema:</strong> {{MatchDate}}</p>
+            <p><strong>Cinema:</strong> {{MatchTime}}</p>
+            <p><strong>Price:</strong> {{Price}} EGP</p>
+            <p><strong>Count:</strong> {{Count}}</p>
+            <p><strong>Total Price:</strong> {{TotalPrice}} EGP</p>
+            <p><strong>Date:</strong> {{Date}}</p>
+        </div>
+
+        <div class="footer">
+            <p>If you have any questions, feel free to contact us.</p>
+        </div>
+    </div>
+</body>
+</html>

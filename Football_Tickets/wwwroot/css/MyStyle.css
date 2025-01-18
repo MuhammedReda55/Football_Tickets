@@ -1,0 +1,7 @@
+﻿.hover-effect:hover {
+    transform: scale(1.1); /* Slightly increases the size of the element */
+}
+/*.button-effect:hover {
+    background-color: #fcfcfc;
+    color:black;
+}*/
