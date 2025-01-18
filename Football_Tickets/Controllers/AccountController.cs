@@ -288,6 +288,7 @@ namespace Football_Tickets.Controllers
                 // Save in db
                 user.photo = fileName;
                 await userManager.UpdateAsync(user);
+                
             }
 
             TempData["message"] = "تم تحديث البيانات بنجاح";

@@ -16,41 +16,34 @@ namespace Football_Tickets.Controllers
             this.cartRepository = cartRepository;
             this.userManager = userManager;
         }
+
+
         public IActionResult Index()
         {
             var user = userManager.GetUserId(User);
-            var cart = cartRepository.Get(includeProps: [e => e.Match, e=>e.Match.Stadium,
-                e=>e.Match.Tickets,e=>e.Match.Stadium.Sections], filter: e => e.ApplicationUserId == user).ToList();
-            CartWithTotalPriceVM cartWithTotal = new CartWithTotalPriceVM()
+            var cart = cartRepository.Get(
+                includeProps: [e => e.Match, e => e.Match.Stadium, e => e.Match.Tickets],
+                filter: e => e.ApplicationUserId == user
+            ).ToList();
+
+            // التحقق من البيانات
+            if (cart == null || !cart.Any())
+            {
+                TempData["error"] = "لم يتم العثور على بيانات في السلة.";
+                return View(new CartWithTotalPriceVM { Carts = new List<Cart>(), TotalPrice = 0 });
+            }
+
+            CartWithTotalPriceVM cartWithTotal = new CartWithTotalPriceVM
             {
                 Carts = cart,
                 TotalPrice = cart
-                  .Where(e => e.Match.Tickets.Any()) 
-                   .Sum(e => (double)(e.Match.Stadium.Sections.FirstOrDefault()?.Price ?? 0) * e.Count)
+                    .Where(e => e.Match.Tickets.Any())
+                    .Sum(e => (double)(e.Match.Tickets.FirstOrDefault()?.Price ?? 0) * e.Count)
             };
 
             return View(cartWithTotal);
-            
-
-            //var cart = cartRepository.Get(
-            //    includeProps: [e => e.Match.Tickets], 
-            //    filter: e => e.ApplicationUserId == userId
-            //);
-            //var cartList = cartRepository.Get().ToList();
-
-
-            //double totalPrice = cartList
-            //    .Where(e => e.Match.Tickets.Any()) 
-            //    .Sum(e => (double)(e.Match.Tickets.FirstOrDefault()?.Price ?? 0) * e.Count);
-
-            //CartWithTotalPriceVM cartWithTotal = new CartWithTotalPriceVM()
-            //{
-            //    Carts = cart.ToList(),
-            //    TotalPrice = totalPrice
-            //};
-
-            //return View(cartWithTotal);
         }
+
         public IActionResult AddToCart(int MatchId, int count)
         {
             var userId = userManager.GetUserId(User);
@@ -73,6 +66,7 @@ namespace Football_Tickets.Controllers
                         MatchId = MatchId,
                         Time = DateTime.Now
                     });
+                    cartRepository.Commit();
 
                 }
 

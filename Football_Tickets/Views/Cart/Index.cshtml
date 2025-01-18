@@ -1,66 +1,86 @@
 ﻿@using Football_Tickets.Models.ViewModels
 @model CartWithTotalPriceVM
+
 <div class="container py-4">
     <h2 class="text-center text-success">Booking Cart</h2>
     <div class="row mt-4">
         <div class="col-12">
-            @foreach (var item in Model.Carts)
+            @if (Model.Carts != null && Model.Carts.Any())
             {
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <!-- بيانات الفريقين -->
-                            <div class="col-md-4 d-flex justify-content-between">
-                                <div class="text-center">
-                                    <img src="~/Logo_Teams/@item.Match.HomeTeam.LogoUrl" alt="@item.Match.HomeTeam.TeamName Logo" class="img-fluid mb-2" style="max-height: 50px;" />
-                                    <p class="fw-bold">@item.Match.HomeTeam.TeamName</p>
+                @foreach (var item in Model.Carts)
+                {
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <!-- بيانات الفريقين -->
+                                <div class="col-md-4 d-flex justify-content-between">
+                                    <div class="text-center">
+                                        <img src="~/Logo_Teams/@(item.Match?.HomeTeam?.LogoUrl ?? "default_logo.png")"
+                                             alt="@(item.Match?.HomeTeam?.TeamName ?? "No Team") Logo"
+                                             class="img-fluid mb-2" style="max-height: 50px;" />
+                                        <p class="fw-bold">@item.Match?.HomeTeam?.TeamName ?? "No Team"</p>
+                                    </div>
+                                    <div class="text-center align-self-center">
+                                        <h4 class="text-danger fw-bold">VS</h4>
+                                    </div>
+                                    <div class="text-center">
+                                        <img src="~/Logo_Teams/@(item.Match?.AwayTeam?.LogoUrl ?? "default_logo.png")"
+                                             alt="@(item.Match?.AwayTeam?.TeamName ?? "No Team") Logo"
+                                             class="img-fluid mb-2" style="max-height: 50px;" />
+                                        <p class="fw-bold">@item.Match?.AwayTeam?.TeamName ?? "No Team"</p>
+                                    </div>
                                 </div>
-                                <div class="text-center align-self-center">
-                                    <h4 class="text-danger fw-bold">VS</h4>
-                                </div>
-                                <div class="text-center">
-                                    <img src="~/Logo_Teams/@item.Match.AwayTeam.LogoUrl" alt="@item.Match.AwayTeam.TeamName Logo" class="img-fluid mb-2" style="max-height: 50px;" />
-                                    <p class="fw-bold">@item.Match.AwayTeam.TeamName</p>
-                                </div>
-                            </div>
 
-                            <!-- بيانات المباراة -->
-                            <div class="col-md-4 text-center">
-                                <p class="mb-1"><i class="bi bi-calendar-event"></i> @item.Match.MatchDate</p>
-                                <p class="mb-1"><i class="bi bi-clock"></i> @item.Match.MatchTime</p>
-                                <p class="mb-1"><i class="bi bi-geo-alt"></i> @item.Match.Stadium.Location</p>
-                                <p class="mb-0"><i class="bi bi-building"></i> @item.Match.Stadium.Name</p>
-                            </div>
+                                <!-- بيانات المباراة -->
+                                <div class="col-md-4 text-center">
+                                    <p class="mb-1"><i class="bi bi-calendar-event"></i> @item.Match?.MatchDate?.ToString("yyyy-MM-dd") ?? "No Date"</p>
+                                    <p class="mb-1"><i class="bi bi-clock"></i> @item.Match?.MatchTime?.ToString(@"hh\:mm") ?? "No Time"</p>
+                                    <p class="mb-1"><i class="bi bi-geo-alt"></i> @item.Match?.Stadium?.Location ?? "No Location"</p>
+                                    <p class="mb-0"><i class="bi bi-building"></i> @item.Match?.Stadium?.Name ?? "No Stadium"</p>
+                                </div>
 
-                            <!-- التحكم في السلة -->
-                            <div class="col-md-4 text-center">
-                                <h6 class="fw-semibold">
-                                    $@item.Match.Stadium.Sections.FirstOrDefault()?.Price
-                                    <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
-                                </h6>
-                                <div class="btn-group mt-3" role="group">
-                                    <a href="/Cart/Increment?MatchId=@item.MatchId" class="btn btn-outline-success"><i class="bi bi-plus-circle"></i> Add</a>
-                                    <a href="/Cart/Decreament?MatchId=@item.MatchId" class="btn btn-outline-warning"><i class="bi bi-dash-circle"></i> Remove</a>
-                                    <a href="/Cart/Delete?id=@item.MatchId" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
+                                <!-- التحكم في السلة -->
+                                <div class="col-md-4 text-center">
+                                    <h6 class="fw-semibold">
+                                        $@(item.Match?.Tickets?.FirstOrDefault()?.Price ?? 0)
+                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                    </h6>
+                                    <div class="btn-group mt-3" role="group">
+                                        <a href="/Cart/Increment?MatchId=@item.MatchId" class="btn btn-outline-success">
+                                            <i class="bi bi-plus-circle"></i> Add
+                                        </a>
+                                        <a href="/Cart/Decreament?MatchId=@item.MatchId" class="btn btn-outline-warning">
+                                            <i class="bi bi-dash-circle"></i> Remove
+                                        </a>
+                                        <a href="/Cart/Delete?id=@item.MatchId" class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-danger">No items in the cart.</p>
             }
         </div>
     </div>
 
     <!-- الإجمالي -->
-    <div class="row mt-4">
-        <div class="col-md-6 offset-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h5 class="fw-bold">Total Price: $@Model.TotalPrice</h5>
-                    <a href="/Cart/Pay" class="btn btn-primary w-50 mt-3">Checkout</a>
+    @if (Model.TotalPrice > 0)
+    {
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="fw-bold">Total Price: $@Model.TotalPrice</h5>
+                        <a href="/Cart/Pay" class="btn btn-primary w-50 mt-3">Checkout</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
-
