@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Football_Tickets.Models.Stadium>
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]');
+        </script>
+    }
+
+}
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Stadium</a>
+</p>
+<table class="table table-bordered table-hover table-striped text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Location)</th>
+            <th>Team</th>
+            <th>@Html.DisplayNameFor(model => model.Capacity)</th>
+            @* <th>Actions</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stadium in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => stadium.Name)</td>
+                <td>@Html.DisplayFor(modelItem => stadium.Location)</td>
+                <td>
+                    @if (stadium.Teams.Any())
+                    {
+                        <ul>
+                            @foreach (var item in stadium.Teams)
+                            {
+                                <li>@item.TeamName</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No Team</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => stadium.Capacity)</td>
+                
+                
+                @* <td> *@
+                @*     <a href="/Stadium/Edit?StadiumId=@stadium.StadiumId" class="btn btn-warning btn-sm">Edit</a> *@
+                @*     | *@
+                @*     <a href="/Stadium/Delete?StadiumId=@stadium.StadiumId" class="btn btn-danger btn-sm">Delete</a> *@
+                @* </td> *@
+            </tr>
+        }
+    </tbody>
+</table>

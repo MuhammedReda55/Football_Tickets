@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Football_Tickets.Models.Match>
+
+@{
+    ViewData["Title"] = "Matches";
+}
+
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Matches</h1>
+
+    <p class="text-end">
+        <a asp-action="Create" class="btn btn-outline-info">Create New Match</a>
+    </p>
+
+    <table class="table table-bordered table-hover table-striped text-center" style="table-layout: fixed; width: 100%;">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 12%;">Match Date</th>
+                <th style="width: 10%;">Section 1 Price</th>
+                <th style="width: 10%;">Section 2 Price</th>
+                <th style="width: 10%;">Section 3 Price</th>
+                <th style="width: 18%;">Home Team</th>
+                <th style="width: 18%;">Away Team</th>
+                <th style="width: 12%;">Stadium</th>
+                <th style="width: 15%;">Actions</th> <!-- زيادة العرض إلى 15% -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.MatchDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Section1Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Section2Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Section3Price)</td>
+                    <td>
+                        <div class="d-flex align-items-center justify-content-start">
+                            <a href="/Match/DetailsTeam?TeamId=@item.HomeTeamId"> <img src="~/Logo_Teams/@item.HomeTeam.LogoUrl" alt="Home Team Logo" class="rounded-circle me-2" style="width: 40px; height: 40px;" />
+                            <span>@Html.DisplayFor(modelItem => item.HomeTeam.TeamName)</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center justify-content-start">
+                            <a href="/Match/DetailsTeam?TeamId=@item.AwayTeamId"> <img src="~/Logo_Teams/@item.AwayTeam.LogoUrl" alt="Away Team Logo" class="rounded-circle me-2" style="width: 40px; height: 40px;" />
+                            <span>@Html.DisplayFor(modelItem => item.AwayTeam.TeamName)</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Stadium.Name)</td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-1">
+                            <!-- تعديل لعرض الأزرار جنبًا إلى جنب -->
+                            <a href="/Match/Edit?MatchId=@item.MatchId" class="btn btn-outline-warning">Edit</a>
+                            @* <a asp-action="Details" asp-route-id="@item.MatchId" class="btn btn-sm btn-info">Details</a> *@
+                            <a href="javascript:void(0);"
+                               class="btn btn-outline-primary"
+                               onclick="showDeleteModal('@item.MatchId')">Delete</a>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this match?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]');
+        </script>
+    }
+
+    <script>
+        function showDeleteModal(matchId) {
+            // Update the form action with the MatchId
+            const form = document.getElementById("deleteForm");
+            form.action = `/Match/Delete?MatchId=${matchId}`;
+
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+    </script>
+}
+

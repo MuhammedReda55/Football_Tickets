@@ -1,0 +1,78 @@
+﻿@model Football_Tickets.Models.Team
+
+@{
+    ViewData["Title"] = "Create Team";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Create New Team</h1>
+
+    <form asp-action="Create" asp-controller="Team" enctype="multipart/form-data" class="w-50 mx-auto p-4 rounded shadow">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <!-- Team Name -->
+        <div class="form-group mb-3">
+            <label asp-for="TeamName" class="form-label">Team Name</label>
+            <input asp-for="TeamName" class="form-control" placeholder="Enter team name" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter team description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>     
+
+
+        <!-- Logo Team -->
+        <div class="form-group mb-3">
+            <label asp-for="LogoUrl" class="control-label">Profile Picture</label>
+            <input type="file" class="form-control" name="file" accept="image/*" onchange="previewImage(event)" />
+            <span asp-validation-for="@Model.LogoUrl" class="text-danger"></span>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="mb-3 text-center">
+            <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 50%; height: auto; display: none;" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="StadiumId" class="form-label">Stadium</label>
+            <select asp-for="StadiumId" class="form-select">
+                <option value="">Select a stadium</option>
+                @foreach (var team in (List<Stadium>)ViewData["team"])
+                {
+                    <option value="@team.StadiumId">@team.Name</option>
+                }
+            </select>
+            <span asp-validation-for="StadiumId" class="text-danger"></span>
+        </div>
+
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-lg">Create Team</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const imagePreview = document.getElementById("imagePreview");
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

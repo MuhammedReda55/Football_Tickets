@@ -1,0 +1,88 @@
+﻿@model Football_Tickets.Models.Match
+
+@{
+    ViewData["Title"] = "Edit Match";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Edit Match</h1>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="MatchId" />
+
+        
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="MatchDate" class="form-label">Match Date</label>
+                <input asp-for="MatchDate" class="form-control" type="datetime-local" value="@Model.MatchDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="MatchDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="AwayTeamId" class="form-label">Away Team</label>
+                <select asp-for="AwayTeamId" class="form-select">
+                    <option value="">Select Away Team</option>
+                    @foreach (var team in (List<Team>)ViewData["team"])
+                    {
+                        <option value="@team.TeamId">@team.TeamName</option>
+                    }
+                </select>
+                <span asp-validation-for="AwayTeamId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="HomeTeamId" class="form-label">Home Team</label>
+                <select asp-for="HomeTeamId" class="form-select">
+                    <option value="">Select Home Team</option>
+                    @foreach (var team in (List<Team>)ViewData["team"])
+                    {
+                        <option value="@team.TeamId">@team.TeamName</option>
+                    }
+                </select>
+                <span asp-validation-for="HomeTeamId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="StadiumId" class="form-label">Stadium</label>
+                <select asp-for="StadiumId" class="form-select">
+                    <option value="">Select Stadium</option>
+                    @foreach (var stadium in (List<Stadium>)ViewData["stadium"])
+                    {
+                        <option value="@stadium.StadiumId">@stadium.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="StadiumId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="Section1Price" class="form-label">Section 1 Price</label>
+                <input asp-for="Section1Price" class="form-control" />
+                <span asp-validation-for="Section1Price" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Section2Price" class="form-label">Section 2 Price</label>
+                <input asp-for="Section2Price" class="form-control" />
+                <span asp-validation-for="Section2Price" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Section3Price" class="form-label">Section 3 Price</label>
+                <input asp-for="Section3Price" class="form-control" />
+                <span asp-validation-for="Section3Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary ms-3">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

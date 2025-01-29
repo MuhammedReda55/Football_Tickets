@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Found</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .not-found-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .not-found-icon {
+            font-size: 6rem;
+            color: #dc3545;
+        }
+
+        .not-found-title {
+            font-size: 2.5rem;
+            color: #343a40;
+            font-weight: bold;
+        }
+
+        .not-found-message {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        .btn-home {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-home:hover {
+                background-color: #0056b3;
+                color: #fff;
+            }
+
+        .illustration {
+            max-width: 300px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="not-found-container">
+        <!-- Optional Illustration -->
+        <img src="https://via.placeholder.com/300x200.png?text=No+Movies" alt="Not Found Illustration" class="illustration">
+
+        <!-- Icon -->
+        <i class="bi bi-exclamation-triangle-fill not-found-icon"></i>
+
+        <!-- Title -->
+        <h1 class="not-found-title">No Movies Found</h1>
+
+        <!-- Message -->
+        <p class="not-found-message">It seems there are no movies available right now. Please check back later.</p>
+
+        <!-- Button -->
+        <a href="/" class="btn btn-home">Go Back to Home</a>
+    </div>
+
+    <!-- Bootstrap Icons (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

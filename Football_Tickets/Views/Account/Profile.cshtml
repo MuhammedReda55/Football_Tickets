@@ -1,0 +1,107 @@
+﻿@model Football_Tickets.Models.ViewModels.ApplicationUserVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4"><b>Profile</b></h1>
+    <hr />
+
+    <div class="row">
+        <!-- Profile Form -->
+        <div class="col-md-6">
+            <form asp-action="Profile">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Username -->
+                <div class="form-group mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group mb-4">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center">
+                    <input type="submit" value="Save Changes" class="btn btn-primary btn-lg" />
+                </div>
+            </form>
+        </div>
+
+        <!-- Profile Photo Section -->
+        <div class="col-md-6 text-center">
+            <!-- Current Profile Photo -->
+            <div class="mb-4">
+                <img id="profilePhoto" src="~/Photo_Users/@UserManager.GetUserAsync(User).Result.photo" class="rounded-circle" width="300px" height="300px" style="object-fit: cover; border: 2px solid #007bff;" />
+            </div>
+
+            <!-- Upload New Photo -->
+            <form action="updatePhoto" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="photo" class="form-label">Upload New Photo</label>
+                    <input type="file" name="photo" id="photo" class="form-control" onchange="previewPhoto(event)" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Update Photo</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+    <!-- Change Password Link -->
+    <div class="text-center mt-4">
+        <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-link text-decoration-none" style="font-size: 1.5rem; font-weight: bold; color: #007bff;">
+            <i class="bi bi-key-fill me-2"></i>Change Password
+        </a>
+    </div>
+
+</div>
+
+@section Scripts {
+    <!-- Toastr Notifications -->
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]');
+        </script>
+    }
+
+    <!-- Preview Image Script -->
+    <script>
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profilePhoto').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}

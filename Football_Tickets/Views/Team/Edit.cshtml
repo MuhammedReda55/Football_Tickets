@@ -1,0 +1,72 @@
+﻿@model Football_Tickets.Models.Team
+
+<h4>Team</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TeamId" />
+            <div class="form-group">
+                <label asp-for="TeamName" class="control-label"></label>
+                <input asp-for="TeamName" class="form-control" />
+                <span asp-validation-for="TeamName" class="text-danger"></span>
+            </div>
+            <!-- Logo Team -->
+            <div class="form-group">
+                <label asp-for="LogoUrl" class="control-label"></label>
+                <input type="file" class="form-control" name="file" accept="image/*" onchange="previewImage(event)" value="@Model.LogoUrl">
+                <span asp-validation-for="LogoUrl" class="text-danger"></span>
+            </div>
+            <!-- Image Preview -->
+            <div class="mb-3">
+                <img id="imagePreview" src="~/Logo_Teams/@Model.LogoUrl" alt="Image Preview" style="max-width: 20%; height: auto;" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="StadiumId" class="form-label">Stadium</label>
+                <select asp-for="StadiumId" class="form-select">
+                    <option value="">Select a stadium</option>
+                    @foreach (var team in (List<Stadium>)ViewData["stadium"])
+                    {
+                        <option value="@team.StadiumId">@team.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="StadiumId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const imagePreview = document.getElementById("imagePreview");
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+</script>

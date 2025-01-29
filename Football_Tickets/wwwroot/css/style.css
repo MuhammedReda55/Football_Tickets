@@ -1,0 +1,58 @@
+﻿/* تنسيق الـdiv اللي فيه اللوجوهات */
+.logos-container {
+    display: flex; /* استخدام flexbox */
+    justify-content: center; /* توسيط العناصر أفقياً */
+    align-items: center; /* توسيط العناصر عمودياً */
+    gap: 20px; /* إضافة مسافة بين الصور */
+    margin: 5px;
+    background-color: white; /* إضافة لون الخلفية */
+}
+.cup-image {
+    width: 100%;
+    height: auto; /* الحفاظ على النسبة الأصلية للصورة */
+    position: absolute;
+    top: 0; /* جعل الجزء العلوي من الصورة فوق الـnavbar */
+    left: 0;
+    z-index: -1;
+}
+.image-container {
+    position: relative; /* تأكد أن الصورة ستظل في موضعها الصحيح */
+    width: 100%;
+}
+.custom-body-background {
+    background-color: #f8f9fa;
+    /* Sets background color to purple */
+}
+.card-header-custom
+{
+    background-color:purple;
+}
+.custom-register-button {
+    background-color: purple;
+    border-radius: 25px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+}
+.form-style {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: black;
+    font-weight: bold;
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+}
+.user-account {
+    color: grey;
+    font-size: 16px;
+    font-weight: bold;
+    text-align:center;
+}
+.text-style
+{
+    color:white;
+    text-decoration:none;
+
+}

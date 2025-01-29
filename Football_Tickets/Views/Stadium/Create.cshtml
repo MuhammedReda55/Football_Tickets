@@ -1,0 +1,57 @@
+﻿@model Football_Tickets.Models.Stadium
+
+@{
+    ViewData["Title"] = "Create Stadium";
+    // var sections = ViewData["section"] as List<Football_Tickets.Models.Section>;
+    // var teams = ViewData["team"] as List<Football_Tickets.Models.Team>;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Create New Stadium</h1>
+
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Stadium Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Location" class="form-label">Location</label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Capacity" class="form-label">Capacity</label>
+            <input asp-for="Capacity" type="number" class="form-control" />
+            <span asp-validation-for="Capacity" class="text-danger"></span>
+        </div>
+
+        
+
+         <div class="col-md-6 mb-3"> 
+             <label asp-for="SelectedTeamId" class="form-label">Stadium</label>
+            <select asp-for="SelectedTeamId" class="form-select">
+                <option value="">Select a Team</option> 
+                 @foreach (var team in (List<Team>)ViewData["team"]) 
+                 {
+                     <option value="@team.TeamId">@team.TeamName</option> 
+                 } 
+             </select>
+            <span asp-validation-for="SelectedTeamId" class="text-danger"></span>
+        </div> 
+
+      
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

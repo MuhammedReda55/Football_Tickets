@@ -1,0 +1,32 @@
+﻿@model Football_Tickets.Models.ViewModels.ForgotPasswordVM
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
+        <h2 class="text-center mb-4 text-primary">Check Email</h2>
+
+        <!-- Form -->
+        <form asp-action="CheckEmail" asp-controller="Account" method="post">
+            <!-- Email Field -->
+            <div class="form-group mb-3">
+                <!-- Display Validation Error for Email -->
+                <span asp-validation-for="Email" class="text-danger d-block mb-2"></span>
+
+                <input type="email"
+                       asp-for="Email"
+                       class="form-control form-control-lg"
+                       placeholder="Enter your email"
+                       required
+                       style="border-radius: 10px;" />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg" style="border-radius: 10px;">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Validation Summary -->
+<div class="container mt-3">
+    <div asp-validation-summary="All" class="text-danger text-center"></div>
+</div>

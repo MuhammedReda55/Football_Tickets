@@ -1,0 +1,158 @@
+﻿@using Microsoft.AspNetCore.Identity
+ @inject UserManager<ApplicationUser> UserManeger
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Football_Tickets</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- إضافة الخط من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Football_Tickets.styles.css" asp-append-version="true" />
+</head>
+<body class="custom-body-background">
+    <header>
+        <div class="logos-container">
+            <img src="~/Images/liver.jfif" alt="LiverPool" width="50" />
+            <img src="~/Images/united.jfif" alt="United" width="50" />
+            <img src="~/Images/chel.jfif" alt="Chelsea" width="50" />
+            <img src="~/Images/Wes.png" alt="Wes" width="50" height="50" />
+        </div>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid" style="background-color:purple" >
+
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="~/logo.jpeg" alt="Website Logo" width="100" class="me-2">
+                    <span class="text-style">Premier League</span>
+                </a>
+
+                <!-- Toggler Button for Small Screens -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <!-- Home -->
+                        <li class="nav-item">
+                            <a class=" fw-bold text-style" href="/Home/Index">Home</a>
+                        </li>
+                        <!-- Admin Dropdown -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                                <div class="dropdown-menu bg-light">
+                                    <h6 class="dropdown-header">Management System</h6>
+
+                                    <a class="dropdown-item" href="/Account/Users">Users</a>
+                                    <a class="dropdown-item" href="/Match/Index">Matchs</a>
+                                    <a class="dropdown-item" href="/Season/Index">Seasons</a>
+                                    <a class="dropdown-item" href="/Team/Index">Teams</a>
+                                    <a class="dropdown-item" href="/Stadium/Index">Stadiums</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </li>
+                        }
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                                <div class="dropdown-menu bg-light">
+                                    <h6 class="dropdown-header">Management System</h6>
+
+                                   
+                                    <a class="dropdown-item" href="/Match/Index">Matchs</a>
+                                    <a class="dropdown-item" href="/Season/Index">Seasons</a>
+                                    <a class="dropdown-item" href="/Team/Index">Teams</a>
+                                    <a class="dropdown-item" href="/Stadium/Index">Stadiums</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </li>
+                        }
+                        <!-- All Payments -->
+                        @* <li class="nav-item"> *@
+                        @*     <a class="nav-link fw-bold" href="/Home/AllFilms">All Movies</a> *@
+                        @* </li> *@
+
+                        <!-- Cart -->
+                        <li class="nav-item">
+                            <a class="nav-link text-style" href="/Cart/Index">
+                                <i class="bi bi-cart-fill"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- User Authentication and Search -->
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <!-- Profile and Welcome Message -->
+                            <li class="nav-item dropdown d-flex align-items-center">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center fw-bold text-dark" data-bs-toggle="dropdown" href="#" role="button">
+                                    <img src="~/Photo_Users/@UserManeger.GetUserAsync(User).Result.photo" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
+                                    Welcome, @User.Identity.Name
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile">My Profile</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </div>
+                            </li>
+
+                            <!-- Search Form -->
+                            @* <li class="nav-item ms-3"> *@
+                            @*     <form class="d-flex" action="/Home/Search"> *@
+                            @*         <input class="form-control me-2" type="search" name="name" placeholder="Search for movie..." aria-label="Search"> *@
+                            @*         <button class="btn btn-primary" type="submit">Search</button> *@
+                            @*     </form> *@
+                            @* </li> *@
+                        }
+                        else
+                        {
+
+                            <!-- Login/Register -->
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold text-style" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold text-style" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+
+        </nav>
+        <div class="image-container" class="image-container">
+            <img src="/Images/FACup.jpg" alt="Description of image" class="cup-image" />
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Football_Tickets - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("selects", required: false)
+</body>
+</html>

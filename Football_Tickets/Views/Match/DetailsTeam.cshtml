@@ -1,0 +1,31 @@
+﻿@model Football_Tickets.Models.Team
+
+@{
+    ViewData["Title"] = "Team Details";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <!-- عرض اللوجو في منتصف الصفحة -->
+        <img src="~/Logo_Teams/@Model.LogoUrl" alt="@Model.TeamName Logo" class="img-fluid rounded-circle shadow-lg mb-3" style="width: 150px; height: 150px;" />
+        <h2 class="fw-bold">@Model.TeamName</h2>
+    </div>
+
+    <div class="card mx-auto shadow" style="max-width: 600px;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Team Details</h4>
+            <dl class="row">
+                <dt class="col-sm-4 fw-bold">Description</dt>
+                <dd class="col-sm-8">@Model.Description"</dd>
+
+                <dt class="col-sm-4 fw-bold">Stadium</dt>
+                <dd class="col-sm-8">@Model.Stadium.Name"</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        @* <a asp-action="Edit" asp-route-id="@Model?.TeamId" class="btn btn-warning me-2">Edit</a> *@
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

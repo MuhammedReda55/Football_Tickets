@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Football_Tickets.Models.Team>
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Teams</h1>
+
+    <p class="text-end">
+        <a asp-action="Create" class="btn btn-primary">Create New Team</a>
+    </p>
+
+    <table class="table table-bordered table-hover table-striped text-center" style="table-layout: fixed; width: 100%;">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 20%;">@Html.DisplayNameFor(model => model.TeamName)</th>
+                <th style="width: 20%;">@Html.DisplayNameFor(model => model.LogoUrl)</th>
+                <th style="width: 30%;">@Html.DisplayNameFor(model => model.Description)</th>
+                <th style="width: 15%;">@Html.DisplayNameFor(model => model.Stadium)</th>
+                <th style="width: 15%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
+                    <td>
+                        <img src="~/Logo_Teams/@item.LogoUrl" alt="@item.TeamName Logo" class="img-fluid rounded" style="max-width: 80px; max-height: 80px;" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@item.Stadium.Name</td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="/Team/Edit?TeamId=@item.TeamId" class="btn btn-warning btn-sm">Edit</a>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    data-team-id="@item.TeamId"
+                                    data-team-name="@item.TeamName">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the team <strong id="teamName"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]');
+        </script>
+    }
+   
+}
+<script>
+    // JavaScript to handle the delete modal
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var teamId = button.getAttribute('data-team-id'); // Extract info from data-* attributes
+        var teamName = button.getAttribute('data-team-name');
+
+        // Update the modal's content
+        var teamNameElement = deleteModal.querySelector('#teamName');
+        var confirmDeleteBtn = deleteModal.querySelector('#confirmDeleteBtn');
+
+        teamNameElement.textContent = teamName;
+        confirmDeleteBtn.href = '/Team/Delete?TeamId=' + teamId;
+    });
+</script>
