@@ -15,6 +15,7 @@ namespace Football_Tickets.Models
         public Match Match { get; set; }
 
         public int Count { get; set; }
+        public string section { get; set; }
         public int? SeatNumber { get; set; }
         public DateTime Time { get; set; }
     }

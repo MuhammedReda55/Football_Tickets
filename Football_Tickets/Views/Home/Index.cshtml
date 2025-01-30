@@ -80,19 +80,33 @@
                         <!-- Buttons -->
                         <div class="row mb-4 justify-content-center">
                             <div class="col-md-6 col-sm-8 col-12">
-                                <form asp-action="Details" asp-controller="Home" class="d-flex align-items-center">
+                                <form asp-action="AddToCart" asp-controller="Cart" class="d-flex flex-column gap-3">
                                     <input type="hidden" name="MatchId" value="@match.MatchId" />
 
-                                    <div class="input-group">
-                                        <!-- حقل إدخال العدد -->
-                                        
+                                    <!-- Seat Number Input -->
+                                    <div class="form-group">
+                                        <label for="seatNumber" class="form-label h5">Enter Seat Number</label>
+                                        <input type="number" id="seatNumber" name="SeatNumber" class="form-control form-control-lg" placeholder="Enter your seat number" required />
+                                    </div>
 
-                                        <!-- زر الإرسال -->
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="bi bi-cart-plus"></i> Details
+                                    <!-- Section Selection -->
+                                    <div class="form-group">
+                                        <label for="section" class="form-label h5">Select Section</label>
+                                        <select id="section" name="section" class="form-select form-select-lg" required>
+                                            <option value="Section1">Section 1 - $@match.Section1Price</option>
+                                            <option value="Section2">Section 2 - $@match.Section2Price</option>
+                                            <option value="Section3">Section 3 - $@match.Section3Price</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="bi bi-cart-plus"></i> Book Ticket
                                         </button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>

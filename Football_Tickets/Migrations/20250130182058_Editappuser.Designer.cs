@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Football_Tickets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250129203922_createedtt")]
-    partial class createedtt
+    [Migration("20250130182058_Editappuser")]
+    partial class Editappuser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace Football_Tickets.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -53,7 +52,6 @@ namespace Football_Tickets.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -134,6 +132,10 @@ namespace Football_Tickets.Migrations
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ApplicationUserId", "MatchId");
 

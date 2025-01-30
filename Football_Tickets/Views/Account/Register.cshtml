@@ -62,6 +62,16 @@
                             <button type="submit"  class="custom-register-button">Register</button>
                         </div>
                     </form>
+                    <form id="external-account" asp-action="ExternalLogin" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in ViewBag.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
                 </div>
                 <div class="card-footer text-center">
                     <p  class="user-account">Already have an account?</p>

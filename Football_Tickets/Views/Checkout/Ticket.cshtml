@@ -1,0 +1,144 @@
+﻿@model Football_Tickets.Models.ViewModels.CartWithTotalPriceVM
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل التذكرة</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+        }
+
+        .ticket-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .ticket-header h1 {
+                font-size: 28px;
+                color: #343a40;
+            }
+
+            .ticket-header p {
+                font-size: 14px;
+                color: #6c757d;
+            }
+
+        .ticket-details {
+            font-size: 16px;
+            text-align: right;
+        }
+
+            .ticket-details .detail-label {
+                font-weight: bold;
+                color: #495057;
+            }
+
+        .divider {
+            border-top: 2px dashed #dee2e6;
+            margin: 20px 0;
+        }
+
+        .ticket-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-print {
+            width: 150px;
+        }
+
+        .ticket-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ticket-details-wrapper {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="ticket-container">
+            <div class="ticket-header">
+                <h1>🎟️ تفاصيل التذكرة</h1>
+                <p>شكرًا لاختيارك خدمتنا لحجز التذاكر</p>
+            </div>
+
+            <!-- معلومات المستخدم -->
+            <div class="ticket-details">
+                <p><span class="detail-label">اسم المستخدم:</span> @Model.UserName</p>
+            </div>
+
+            @foreach (var item in Model.Carts)
+            {
+                <div class="ticket-row">
+                    <!-- تفاصيل التذكرة -->
+                    <div class="ticket-details-wrapper">
+                        <p><span class="detail-label">المباراة:</span> @item.Match.HomeTeam.TeamName VS @item.Match.AwayTeam.TeamName</p>
+                        <p><span class="detail-label">الملعب:</span> @item.Match.Stadium.Name</p>
+                        <p><span class="detail-label">التاريخ:</span> @item.Match.MatchDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        <p><span class="detail-label">المقعد:</span> @item.SeatNumber</p>
+                        <p><span class="detail-label">القسم:</span> @item.section</p>
+                        <p>
+                            <span class="detail-label">السعر:</span>
+                            @if (item.section == "Section1")
+                            {
+                                @(item.Match.Section1Price * item.Count)
+                                <h6>EGP</h6>
+                                    }
+                            else if (item.section == "Section2")
+                            {
+                                @(item.Match.Section2Price * item.Count)
+                                <h6>EGP</h6>
+                                    }
+                            else
+                            {
+                                @(item.Match.Section3Price * item.Count)
+                                <h6>EGP</h6>
+                                    }
+                        </p>
+                    </div>
+                </div>
+                <hr />
+            }
+
+            <!-- إجمالي السعر -->
+            <div class="ticket-details">
+                <p><span class="detail-label">إجمالي السعر:</span> @Model.TotalPrice EGP</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ticket-footer">
+                <button class="btn btn-primary btn-print" onclick="window.print()">طباعة التذكرة</button>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-print">العودة إلى الصفحة الرئيسية</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

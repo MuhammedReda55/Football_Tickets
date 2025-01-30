@@ -20,15 +20,7 @@ namespace Football_Tickets.Controllers
             ]).ToList();
             return View(match);
         }
-        public IActionResult Details(int MatchId)
-        {
-            
-            var match = _matchRepository.Get(filter:e=>e.MatchId ==MatchId
-            , includeProps: [e=>e.Stadium,e=>e.HomeTeam,e=>e.AwayTeam]).FirstOrDefault();
-
-            
-            return View(match);
-        }
+        
         public IActionResult NotFoundSearch()
         {
             return View();

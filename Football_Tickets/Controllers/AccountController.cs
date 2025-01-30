@@ -4,7 +4,9 @@ using Football_Tickets.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Security.Claims;
 
 namespace Football_Tickets.Controllers
 {
@@ -25,11 +27,74 @@ namespace Football_Tickets.Controllers
             this.emailSender = emailSender;
 
         }
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            
+            ViewBag.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             return View();
         }
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { ReturnUrl = returnUrl });
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (remoteError != null)
+            {
+                ModelState.AddModelError("", $"Error from external provider: {remoteError}");
+                return RedirectToAction(nameof(Register));
+            }
+
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Register));
+            }
+
+            // Sign in the user with this external login provider if the user already has a login
+            var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            if (signInResult.RequiresTwoFactor)
+            {
+                return RedirectToAction(nameof(LoginWith2fa), new { ReturnUrl = returnUrl });
+            }
+
+            if (signInResult.IsLockedOut)
+            {
+                return RedirectToAction(nameof(Lockout));
+            }
+
+            // If the user does not have an account, then create one and sign in
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            if (email != null)
+            {
+                var user = new ApplicationUser { UserName = email, Email = email };
+
+                var result = await userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+            }
+
+            ViewData["ErrorMessage"] = "Error signing in with external provider.";
+            return RedirectToAction(nameof(Register));
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Register(ApplicationUserVM UserVM)
         {

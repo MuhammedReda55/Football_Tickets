@@ -37,6 +37,13 @@ namespace Football_Tickets
            .AddEntityFrameworkStores<ApplicationDbContext>()
            .AddDefaultTokenProviders();
 
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            });
+
+
 
             builder.Services.AddScoped<IMatchRepository, MatchRepository>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
