@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Football_Tickets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250130182058_Editappuser")]
-    partial class Editappuser
+    [Migration("20250131104621_initialcreatee")]
+    partial class initialcreatee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

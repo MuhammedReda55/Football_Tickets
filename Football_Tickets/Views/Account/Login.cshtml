@@ -8,37 +8,38 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
-                <div class="card-header text-center bg-primary text-white">
+                <div class="card-header text-center bg-primary text-white card-stylee">
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="Login">
                         <div asp-validation-summary="All" class="text-danger mb-3"></div>
                         <div class="mb-3">
-                            <label asp-for="Account" class="form-label"></label>
-                            <input asp-for="Account" class="form-control" />
+                         
+                            <label asp-for="Account" class="form-label text-color">Email Address</label>
+                            <input asp-for="Account" class="form-control input-style cust-user-input  iconn-cus" placeholder="Enter your name."/>
                             <span asp-validation-for="Account" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" type="password" class="form-control" />
+                            <label asp-for="Password" class="form-label text-color"></label>
+                            <input asp-for="Password" type="password" class="form-control input-style cust-user-input iconn-pass" placeholder="Enter your password." />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="form-check mb-3">
                             <input asp-for="RemeberMe" class="form-check-input" />
-                            <label class="form-check-label">
+                            <label class="form-check-label  custom-login-butt">
                                 @Html.DisplayNameFor(model => model.RemeberMe)
                             </label>
                         </div>
                         <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary custom-register-button  login-custom"><span>Login >> </span></button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="/Account/CheckEmail" class="text-decoration-none text-primary">Forget Password?</a>
+                    <a href="/Account/CheckEmail" class="text-decoration-none text-primary cust-forget ">Forget Password?</a>
                     <br />
-                    <a href="/Account/Register" class="text-decoration-none text-primary">Create New Account</a>
+                    <a href="/Account/Register" class="text-decoration-none text-primary cust-forget">Create New Account</a>
                 </div>
             </div>
         </div>

@@ -2264,7 +2264,8 @@ progress {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--bs-body-color);
+    
+    /*   color: var(--bs-body-color);  */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -4779,7 +4780,7 @@ textarea.form-control-lg {
 }
 
     .card-header:first-child {
-        border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius) 0 0
+     
     }
 
 .card-footer {
@@ -9030,7 +9031,7 @@ textarea.form-control-lg {
 
 .text-primary {
     --bs-text-opacity: 1;
-    color: rgba(var(--bs-primary-rgb),var(--bs-text-opacity)) !important
+  
 }
 
 .text-secondary {
@@ -9334,7 +9335,7 @@ textarea.form-control-lg {
 
 .bg-primary {
     --bs-bg-opacity: 1;
-     background-color: purple;
+    background-color: #003366 ;
 }
 
 .bg-secondary {
@@ -13776,7 +13777,7 @@ body {
 }
 
     .card a {
-        color: #fff
+       
     }
 
     .card .text-muted {
