@@ -73,8 +73,11 @@
     border-radius: 50px;
 }
 .custom-img {
-    height: 100%;
-    object-fit:cover;
+    margin-top: 70px;
+    position: sticky;
+    top: 30px;
+    height: 400px;
+    object-fit: cover;
 }
 .cut-head {
     margin-left: 60%;

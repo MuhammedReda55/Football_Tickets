@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Football_Tickets.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreatee : Migration
+    public partial class initialcreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -297,8 +297,8 @@ namespace Football_Tickets.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MatchID = table.Column<int>(type: "int", nullable: false),
                     SectionID = table.Column<int>(type: "int", nullable: false),
-                    Seatnumber = table.Column<int>(type: "int", nullable: false),
-                    StadiumID = table.Column<int>(type: "int", nullable: false),
+                    Seatnumber = table.Column<int>(type: "int", nullable: true),
+                    StadiumID = table.Column<int>(type: "int", nullable: true),
                     SectionPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
                 },
                 constraints: table =>

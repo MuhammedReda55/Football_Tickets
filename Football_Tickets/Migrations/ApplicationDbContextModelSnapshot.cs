@@ -392,7 +392,7 @@ namespace Football_Tickets.Migrations
                         .HasColumnType("int")
                         .HasColumnName("MatchID");
 
-                    b.Property<int>("Seatnumber")
+                    b.Property<int?>("Seatnumber")
                         .HasColumnType("int");
 
                     b.Property<int>("SectionId")
@@ -402,7 +402,7 @@ namespace Football_Tickets.Migrations
                     b.Property<decimal?>("SectionPrice")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<int>("StadiumId")
+                    b.Property<int?>("StadiumId")
                         .HasColumnType("int")
                         .HasColumnName("StadiumID");
 
@@ -669,7 +669,6 @@ namespace Football_Tickets.Migrations
                     b.HasOne("Football_Tickets.Models.Stadium", "Stadium")
                         .WithMany("Tickets")
                         .HasForeignKey("StadiumId")
-                        .IsRequired()
                         .HasConstraintName("FK__Tickets__Stadium__4AB81AF0");
 
                     b.Navigation("Match");

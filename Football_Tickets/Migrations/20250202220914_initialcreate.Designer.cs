@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Football_Tickets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250131104621_initialcreatee")]
-    partial class initialcreatee
+    [Migration("20250202220914_initialcreate")]
+    partial class initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -395,7 +395,7 @@ namespace Football_Tickets.Migrations
                         .HasColumnType("int")
                         .HasColumnName("MatchID");
 
-                    b.Property<int>("Seatnumber")
+                    b.Property<int?>("Seatnumber")
                         .HasColumnType("int");
 
                     b.Property<int>("SectionId")
@@ -405,7 +405,7 @@ namespace Football_Tickets.Migrations
                     b.Property<decimal?>("SectionPrice")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<int>("StadiumId")
+                    b.Property<int?>("StadiumId")
                         .HasColumnType("int")
                         .HasColumnName("StadiumID");
 
@@ -672,7 +672,6 @@ namespace Football_Tickets.Migrations
                     b.HasOne("Football_Tickets.Models.Stadium", "Stadium")
                         .WithMany("Tickets")
                         .HasForeignKey("StadiumId")
-                        .IsRequired()
                         .HasConstraintName("FK__Tickets__Stadium__4AB81AF0");
 
                     b.Navigation("Match");
