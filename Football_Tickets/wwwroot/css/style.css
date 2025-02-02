@@ -5,7 +5,7 @@
     align-items: center; /* توسيط العناصر عمودياً */
     gap: 20px; /* إضافة مسافة بين الصور */
     margin: 5px;
-    background-color: white; /* إضافة لون الخلفية */
+    /*background-color: white;*/ /* إضافة لون الخلفية */
 }
 .cup-image {
     width: 100%;

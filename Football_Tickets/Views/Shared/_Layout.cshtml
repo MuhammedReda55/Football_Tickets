@@ -11,28 +11,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+
     <!-- إضافة الخط من Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <link href="~/css/togglestyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/Football_Tickets.styles.css" asp-append-version="true" />
+
+
 </head>
 <body class="custom-body-background">
     <header>
-        <div class="logos-container">
-            <img src="~/Images/liver.jfif" alt="LiverPool" width="50" />
-            <img src="~/Images/united.jfif" alt="United" width="50" />
-            <img src="~/Images/chel.jfif" alt="Chelsea" width="50" />
-            <img src="~/Images/Wes.png" alt="Wes" width="50" height="50" />
-        </div>
+
+
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid" style="background-color:#003366">
+            <div class="container-fluid navStyle">
 
                 <a class="navbar-brand d-flex align-items-center" href="/">
-                    <img src="~/logo.jpeg" alt="Website Logo" width="100" class="me-2">
+                    <img src="~/premier league logo.jpeg" alt="Website Logo" width="100" class="me-2">
                     <span class="text-style">Premier League</span>
                 </a>
 
@@ -48,39 +47,23 @@
                         <li class="nav-item">
                             <a class=" fw-bold text-style" href="/Home/Index">Home</a>
                         </li>
-                        <!-- Admin Dropdown -->
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
-                                <div class="dropdown-menu bg-light">
-                                    <h6 class="dropdown-header">Management System</h6>
 
-                                    <a class="dropdown-item" href="/Account/Users">Users</a>
-                                    <a class="dropdown-item" href="/Match/Index">Matchs</a>
-                                    <a class="dropdown-item" href="/Season/Index">Seasons</a>
-                                    <a class="dropdown-item" href="/Team/Index">Teams</a>
-                                    <a class="dropdown-item" href="/Stadium/Index">Stadiums</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </li>
-                        }
-                        @if (User.IsInRole("Employee"))
+                        @* @if (User.IsInRole("Employee"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
-                                <div class="dropdown-menu bg-light">
-                                    <h6 class="dropdown-header">Management System</h6>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                        <div class="dropdown-menu bg-light">
+                        <h6 class="dropdown-header">Management System</h6>
 
-                                   
-                                    <a class="dropdown-item" href="/Match/Index">Matchs</a>
-                                    <a class="dropdown-item" href="/Season/Index">Seasons</a>
-                                    <a class="dropdown-item" href="/Team/Index">Teams</a>
-                                    <a class="dropdown-item" href="/Stadium/Index">Stadiums</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </li>
-                        }
+
+                        <a class="dropdown-item" href="/Match/Index">Matchs</a>
+                        <a class="dropdown-item" href="/Season/Index">Seasons</a>
+                        <a class="dropdown-item" href="/Team/Index">Teams</a>
+                        <a class="dropdown-item" href="/Stadium/Index">Stadiums</a>
+                        <div class="dropdown-divider"></div>
+                        </div>
+                        </li>
+                        } *@
                         <!-- All Payments -->
                         @* <li class="nav-item"> *@
                         @*     <a class="nav-link fw-bold" href="/Home/AllFilms">All Movies</a> *@
@@ -93,21 +76,71 @@
                             </a>
                         </li>
                     </ul>
+
+
+
+
+
                     <!-- User Authentication and Search -->
-                    <ul class="navbar-nav">
+                    <div class="navbar-nav ">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <!-- Profile and Welcome Message -->
-                            <li class="nav-item dropdown d-flex align-items-center">
+                            <div class="nav-item dropdown d-flex align-items-center ">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center fw-bold text-dark" data-bs-toggle="dropdown" href="#" role="button">
                                     <img src="~/Photo_Users/@UserManeger.GetUserAsync(User).Result.photo" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
-                                    Welcome, @User.Identity.Name
+                                    <span class="nameColor">@User.Identity.Name </span>
                                 </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile">My Profile</a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                                @* <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Profile">My Profile</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </div> *@
+                            </div>
+
+                            <!-- Toggle Button -->
+                            <a class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#leftSidebar" aria-expanded="false" aria-controls="leftSidebar">
+                                <i class="bi bi-list"></i>Management
+                            </a>
+
+
+                            <!-- Collapsible Left Section -->
+                            <div class="position-fixed top-0 start-0 h-100 w-25 collapse multi-collapse margeTop   " id="leftSidebar">
+
+                                <div class="toggle-section p-3   ">
+
+                                    <div class="">
+                                        <img src="~/Photo_Users/@UserManeger.GetUserAsync(User).Result.photo" class=" me-2" width="20%" height="20%" style="object-fit: cover;">
+                                        <span class="fw-bold">@User.Identity.Name</span>
+                                    </div>
+                                    <div class="d-flex pt-3 fw-bold pb-2">
+                                        <a class="dropdown-item fw-bold" asp-controller="Account" asp-action="Profile">My Profile</a>
+                                        <a class="dropdown-item fw-bold" style="color:#fd7e14;" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </div>
+                                    <!-- Admin Dropdown -->
+                                    @if (User.IsInRole("Admin"))
+                                    {
+
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Account/Users">Users</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Match/Index">Matchs</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Season/Index">Seasons</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Team/Index">Teams</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Stadium/Index">Stadiums</a>
+                                        <div class="dropdown-divider"></div>
+
+                                    }
+                                    @if (User.IsInRole("Employee"))
+                                    {
+
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Match/Index">Matchs</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Season/Index">Seasons</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Team/Index">Teams</a>
+                                        <a class="dropdown-item pb-2 fw-bold" href="/Stadium/Index">Stadiums</a>
+                                        <div class="dropdown-divider"></div>
+
+                                    }
                                 </div>
-                            </li>
+                            </div>
+
 
                             <!-- Search Form -->
                             @* <li class="nav-item ms-3"> *@
@@ -128,14 +161,53 @@
                                 <a class="nav-link fw-bold text-style" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                         }
-                    </ul>
+                    </div>
+
+
+
+
+
+
                 </div>
             </div>
 
 
         </nav>
+
+        <div id="carouselExampleSlidesOnly" class="carousel slide " data-bs-ride="carousel">
+            <div class="carousel-inner logos-container justify-content-start">
+                <div class="carousel-item active ">
+                    <div>
+                        <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    </div>
+                    @* <div>
+                    <img src="~/Images/united.jfif" class="ps-1" alt="United" width="50" />
+                    </div>
+                    <div>
+                    <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    </div>
+                    <div>
+                    <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    </div>
+
+
+                    <img src="~/Images/chel.jfif" class="ps-1" alt="Chelsea" width="50" />
+                    <img src="~/Images/Wes.png" class="ps-1" alt="Wes" width="50" height="50" /> *@
+                </div>
+                <div class="carousel-item">
+                    <img src="~/Images/united.jfif" alt="United" width="50" />
+                </div>
+                <div class="carousel-item">
+                    <img src="~/Images/chel.jfif" alt="Chelsea" width="50" />
+                </div>
+                <div class="carousel-item">
+                    <img src="~/Images/Wes.png" alt="Wes" width="50" height="50" />
+                </div>
+            </div>
+        </div>
+
         <div class="image-container" class="image-container">
-            <!--  <img src="/Images/Regiter.jpg" alt="Description of image" class="cup-image" />                      -->                       -->
+            <!--  <img src="/Images/Regiter.jpg" alt="Description of image" class="cup-image" />                      -->
         </div>
     </header>
     <div class="container">
@@ -153,6 +225,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @await RenderSectionAsync("Styles", required: false)
     @await RenderSectionAsync("selects", required: false)
