@@ -51,6 +51,9 @@ namespace Football_Tickets
             builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
             builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
             builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<ITicketRepository, TicketRepository>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IDbInitionlizer, DbInitioniser>();
 

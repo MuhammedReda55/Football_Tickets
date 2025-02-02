@@ -1,11 +1,10 @@
-﻿@model Football_Tickets.Models.ViewModels.CartWithTotalPriceVM
+﻿@model Football_Tickets.Models.ViewModels.TicketWithTotalPriceVM
 <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تفاصيل التذكرة</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -73,7 +72,6 @@
             flex: 1;
             margin-right: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -85,45 +83,25 @@
                 <p>شكرًا لاختيارك خدمتنا لحجز التذاكر</p>
             </div>
 
-            <!-- معلومات المستخدم -->
             <div class="ticket-details">
                 <p><span class="detail-label">اسم المستخدم:</span> @Model.UserName</p>
             </div>
 
-            @foreach (var item in Model.Carts)
+            @foreach (var item in Model.Tickets)
             {
                 <div class="ticket-row">
-                    <!-- تفاصيل التذكرة -->
                     <div class="ticket-details-wrapper">
                         <p><span class="detail-label">المباراة:</span> @item.Match.HomeTeam.TeamName VS @item.Match.AwayTeam.TeamName</p>
                         <p><span class="detail-label">الملعب:</span> @item.Match.Stadium.Name</p>
                         <p><span class="detail-label">التاريخ:</span> @item.Match.MatchDate.ToString("yyyy-MM-dd HH:mm")</p>
-                        <p><span class="detail-label">المقعد:</span> @item.SeatNumber</p>
-                        <p><span class="detail-label">القسم:</span> @item.section</p>
-                        <p>
-                            <span class="detail-label">السعر:</span>
-                            @if (item.section == "Section1")
-                            {
-                                @(item.Match.Section1Price * item.Count)
-                                <h6>EGP</h6>
-                                    }
-                            else if (item.section == "Section2")
-                            {
-                                @(item.Match.Section2Price * item.Count)
-                                <h6>EGP</h6>
-                                    }
-                            else
-                            {
-                                @(item.Match.Section3Price * item.Count)
-                                <h6>EGP</h6>
-                                    }
-                        </p>
+                        <p><span class="detail-label">المقعد:</span> @(item.Seatnumber?.ToString() ?? "غير محدد")</p>
+                        <p><span class="detail-label">القسم:</span> @item.SectionId</p>
+                        <p><span class="detail-label">السعر:</span> @item.SectionPrice EGP</p>
                     </div>
                 </div>
                 <hr />
             }
 
-            <!-- إجمالي السعر -->
             <div class="ticket-details">
                 <p><span class="detail-label">إجمالي السعر:</span> @Model.TotalPrice EGP</p>
             </div>
@@ -137,8 +115,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

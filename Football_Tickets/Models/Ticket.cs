@@ -11,9 +11,9 @@ public partial class Ticket
 
     public int SectionId { get; set; }
 
-    public int Seatnumber { get; set; }
+    public int? Seatnumber { get; set; }
 
-    public int StadiumId { get; set; }
+    public int? StadiumId { get; set; }
 
     public decimal? SectionPrice { get; set; }
 

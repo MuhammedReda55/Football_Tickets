@@ -1,4 +1,5 @@
-﻿@model List<Match>
+﻿@model Football_Tickets.Models.ViewModels.HomeVM
+
 @section Scripts {
     @if (TempData["message"] != null)
     {
@@ -9,106 +10,99 @@
 }
 
 <div class="container">
-    <h1 class="text-center ">Upcoming Matches</h1>
+    <h1 class="text-center">Upcoming Matches</h1>
     <div class="mb-4 d-flex justify-content-center">
         <div class="col-2 d-inline-flex">
             <select class="form-select" id="dropdown" required name="TeamID">
-                <option selected> Select team</option>
-                @{
-
-                    foreach (var item in Model)
-                    {
-                        <option value="">@item.HomeTeam.TeamName</option>
-
-
-                    }
+                <option selected>Select team</option>
+                @foreach (var match in Model.Matches)
+                {
+                    <option value="">@match.HomeTeam.TeamName</option>
                 }
-
             </select>
         </div>
         <div class="col-2 d-inline-flex mx-4">
             <select class="form-select" id="dropdown" required name="StadiumID">
-                <option selected> Select stadium</option>
-                @{
-
-                    foreach (var item in Model)
-                    {
-                        <option value="">@item.HomeTeam.TeamName</option>
-
-
-                    }
+                <option selected>Select stadium</option>
+                @foreach (var match in Model.Matches)
+                {
+                    <option value="">@match.Stadium.Name</option>
                 }
             </select>
         </div>
-        <div class="col-4 d-inline-flex mx-4 d-flex ">
+        <div class="col-4 d-inline-flex mx-4 d-flex">
             <button type="submit" style="height:50px;" class="btn btn-success rounded-1 ms-2 col-2">Find</button>
         </div>
     </div>
+
     <div class="row">
-        @foreach (var match in Model)
+        @foreach (var match in Model.Matches)
         {
             <div class="col-md-4">
                 <div class="card mb-4 shadow hover-effect">
                     <div class="card-body text-center">
-                        <div class="row mb-3 ">
-                            <!-- Home Team Logo and Name -->
-                            <div class="col-5 text-right ">
-                                <img src="~/Logo_Teams/@match.HomeTeam.LogoUrl" alt="@match.HomeTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
+                        <div class="row mb-3">
+                            <div class="col-5 text-right">
+                                <img src="~/Logo_Teams/@match.HomeTeam.LogoUrl" alt="@match.HomeTeam.TeamName Logo" class="img-fluid" style="max-height: 50px;" />
                                 <p class="mt-2">@match.HomeTeam.TeamName</p>
                             </div>
 
-                            <!-- VS -->
                             <div class="col-2 align-self-center">
                                 <strong>VS</strong>
                             </div>
 
-                            <!-- Away Team Logo and Name -->
                             <div class="col-5 text-left">
-                                <img src="~/Logo_Teams/@match.AwayTeam.LogoUrl" alt="@match.AwayTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
+                                <img src="~/Logo_Teams/@match.AwayTeam.LogoUrl" alt="@match.AwayTeam.TeamName Logo" class="img-fluid" style="max-height: 50px;" />
                                 <p class="mt-2">@match.AwayTeam.TeamName</p>
                             </div>
                         </div>
 
-                        <!-- Match Date and Stadium -->
                         <p><strong>Date:</strong> @match.MatchDate</p>
-                        @* <p><strong>Date:</strong> @match.MatchTime</p> *@
-                       
-
                         <p><strong>Stadium:</strong> @match.Stadium.Name</p>
-                        <p><strong>Location:</strong>@match.Stadium.Location</p>
+                        <p><strong>Location:</strong> @match.Stadium.Location</p>
 
-                        <!-- Buttons -->
-                        <div class="row mb-4 justify-content-center">
-                            <div class="col-md-6 col-sm-8 col-12">
-                                <form asp-action="AddToCart" asp-controller="Cart" class="d-flex flex-column gap-3">
-                                    <input type="hidden" name="MatchId" value="@match.MatchId" />
-
-                                    <!-- Seat Number Input -->
-                                    <div class="form-group">
-                                        <label for="seatNumber" class="form-label h5">Enter Seat Number</label>
-                                        <input type="number" id="seatNumber" name="SeatNumber" class="form-control form-control-lg" placeholder="Enter your seat number" required />
-                                    </div>
-
-                                    <!-- Section Selection -->
-                                    <div class="form-group">
-                                        <label for="section" class="form-label h5">Select Section</label>
-                                        <select id="section" name="section" class="form-select form-select-lg" required>
-                                            <option value="Section1">Section 1 - $@match.Section1Price</option>
-                                            <option value="Section2">Section 2 - $@match.Section2Price</option>
-                                            <option value="Section3">Section 3 - $@match.Section3Price</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Submit Button -->
-                                    <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                                            <i class="bi bi-cart-plus"></i> Book Ticket
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div>
+                        <div class="mb-3">
+                            <label for="ticketSelect_@match.MatchId" class="form-label h5">Booked Tickets</label>
+                            <select id="ticketSelect_@match.MatchId" class="form-select">
+                                @if (Model.MatchTickets.ContainsKey(match.MatchId) && Model.MatchTickets[match.MatchId].Any())
+                                {
+                                    @foreach (var ticket in Model.MatchTickets[match.MatchId])
+                                    {
+                                        <option>
+                                            Seat: @ticket.Seatnumber, Section: @ticket.SectionId, Price: @ticket.SectionPrice EGP
+                                        </option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option>No tickets booked</option>
+                                }
+                            </select>
                         </div>
+
+                        <form asp-action="AddToCart" asp-controller="Cart" class="d-flex flex-column gap-3">
+                            <input type="hidden" name="MatchId" value="@match.MatchId" />
+
+                            <div class="form-group">
+                                <label for="seatNumber" class="form-label h5">Enter Seat Number</label>
+                                <input type="number" id="seatNumber" name="SeatNumber" class="form-control form-control-lg" placeholder="Enter your seat number" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="section" class="form-label h5">Select Section</label>
+                                <select id="section" name="section" class="form-select form-select-lg" required>
+                                    <option value="Section1">Section 1 - $@match.Section1Price</option>
+                                    <option value="Section2">Section 2 - $@match.Section2Price</option>
+                                    <option value="Section3">Section 3 - $@match.Section3Price</option>
+                                </select>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-cart-plus"></i> Book Ticket
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
