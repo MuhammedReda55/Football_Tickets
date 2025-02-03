@@ -13,12 +13,19 @@ namespace Football_Tickets.Controllers
         private readonly ICartRepository cartRepository;
         private readonly IMatchRepository _matchRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ITicketRepository _ticketRepository;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly ISectionRepository _sectionRepository;
 
-        public CartController(ICartRepository cartRepository, IMatchRepository matchRepository, UserManager<ApplicationUser> userManager)
+        public CartController(ICartRepository cartRepository, IMatchRepository matchRepository, UserManager<ApplicationUser> userManager,
+            ITicketRepository ticketRepository,IBookingRepository bookingRepository,ISectionRepository sectionRepository)
         {
             this.cartRepository = cartRepository;
             this._matchRepository = matchRepository;
             this.userManager = userManager;
+            this._ticketRepository = ticketRepository;
+            this._bookingRepository = bookingRepository;
+            this._sectionRepository = sectionRepository;
         }
         public IActionResult Index()
         {
@@ -51,28 +58,29 @@ namespace Football_Tickets.Controllers
             var userId = userManager.GetUserId(User);
             if (userId != null)
             {
-                // Check if the user has already booked a ticket for the selected match
-                var cart = cartRepository.GetOne(filter: e => e.ApplicationUserId == userId && e.MatchId == MatchId);
-                if (cart != null)
-                {
-                    TempData["message"] = "You have already booked a ticket for this match.";
+
+                var cart = cartRepository.GetOne(filter: c => c.ApplicationUserId == userId && c.MatchId == MatchId && c.SeatNumber == SeatNumber && c.section == section);
+                if (cart != null) {
+                    TempData["message"] = "هذا المقعد محجوز بالفعل لهذه المباراة، يرجى اختيار مقعد آخر.";
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Check if the seat is already booked in the same section
-                var seatBooked = cartRepository.Get(filter: e => e.MatchId == MatchId && e.SeatNumber == SeatNumber && e.section == section).Any();
-                if (seatBooked)
+                var existingBooking = _bookingRepository.GetOne(filter: b => b.Ticket.MatchId == MatchId && b.Ticket.Seatnumber == SeatNumber && b.Ticket.Sections == section);
+
+                if (existingBooking != null)
                 {
-                    TempData["message"] = "This seat in the selected section is already booked, please choose a different seat or section.";
+                    TempData["message"] = "هذا المقعد محجوز بالفعل لهذه المباراة، يرجى اختيار مقعد آخر.";
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Check  stadium capacity 
-                var totalSeats = cartRepository.Get(filter: e => e.MatchId == MatchId, includeProps: [e => e.Match.Stadium]).Sum(e => e.Count);
+                
+               
+
+                var totalSeats = _bookingRepository.Get(filter: t => t.MatchId == MatchId).Count();
                 var match = _matchRepository.GetOne(m => m.MatchId == MatchId, includeProps: [e => e.Stadium]);
                 if (totalSeats + count > match.Stadium.Capacity)
                 {
-                    TempData["message"] = "The stadium is at full capacity, no more seats available.";
+                    TempData["message"] = "الملعب ممتلئ بالكامل، لا توجد مقاعد متاحة.";
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -89,7 +97,7 @@ namespace Football_Tickets.Controllers
 
                 cartRepository.Commit();
 
-                TempData["message"] = "Ticket successfully added to your cart.";
+                TempData["message"] = "تمت إضافة التذكرة إلى سلتك بنجاح.";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -176,6 +184,24 @@ namespace Football_Tickets.Controllers
         }
         public IActionResult Pay()
         {
+            var userId = userManager.GetUserId(User);
+            if (userId == null)
+            {
+                TempData["message"] = "يجب تسجيل الدخول لإتمام عملية الدفع.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var cartItems = cartRepository.Get(
+                includeProps: [e => e.Match, e => e.Match.Stadium, e => e.Match.HomeTeam, e => e.Match.AwayTeam],
+                filter: e => e.ApplicationUserId == userId
+            ).ToList();
+
+            if (!cartItems.Any())
+            {
+                TempData["message"] = "سلة التسوق فارغة.";
+                return RedirectToAction("Index", "Home");
+            }
+
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -185,40 +211,76 @@ namespace Football_Tickets.Controllers
                 CancelUrl = $"{Request.Scheme}://{Request.Host}/Checkout/Cancel",
             };
 
-            
-            var cart = cartRepository.Get(includeProps: [e => e.Match.HomeTeam,e=>e.Match.AwayTeam], filter: e => e.ApplicationUserId == userManager.GetUserId(User)).ToList();
-
-            foreach (var item in cart)
+            foreach (var cart in cartItems)
             {
-                
-                decimal ticketPrice = item.section switch
+                int sectionId = cart.section switch
                 {
-                    "Section1" => item.Match.Section1Price ?? 0,
-                    "Section2" => item.Match.Section2Price ?? 0,
-                    "Section3" => item.Match.Section3Price ?? 0,
-                    _ => 0 
+                    "Section1" => 1,
+                    "Section2" => 2,
+                    "Section3" => 3,
+                    _ => 0
                 };
 
-                
+                decimal sectionPrice = cart.section switch
+                {
+                    "Section1" => cart.Match.Section1Price ?? 0,
+                    "Section2" => cart.Match.Section2Price ?? 0,
+                    "Section3" => cart.Match.Section3Price ?? 0,
+                    _ => 0
+                };
+
+                // إنشاء التذكرة
+                var ticket = new Ticket
+                {
+                    MatchId = cart.MatchId,
+                    SectionId = sectionId,
+                    Seatnumber = cart.SeatNumber,
+                    StadiumId = cart.Match.StadiumId,
+                    SectionPrice = sectionPrice,
+                    Sections = cart.section
+                };
+                _ticketRepository.Create(ticket);
+                _ticketRepository.Commit();
+
+                // إنشاء الحجز
+                var booking = new Booking
+                {
+                    MatchId = cart.MatchId,
+                    ApplicationUserId = userId,
+                    TicketId = ticket.TicketId,
+                    Date = DateTime.Now
+                };
+                _bookingRepository.Create(booking);
+                _bookingRepository.Commit();
+
+                // إضافة بيانات التذكرة إلى Stripe
                 options.LineItems.Add(new SessionLineItemOptions
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        Currency = "egp", 
+                        Currency = "egp",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = $"{item.Match.HomeTeam.TeamName} vs {item.Match.AwayTeam.TeamName} - {item.section}", // اسم المباراة مع الـ section
+                            Name = $"{cart.Match.HomeTeam.TeamName} vs {cart.Match.AwayTeam.TeamName} - {cart.section}",
                         },
-                        UnitAmount = (long)(ticketPrice * 100), 
+                        UnitAmount = (long)(sectionPrice * 100),
                     },
-                    Quantity = item.Count, // عدد التذاكر
+                    Quantity = cart.Count,
                 });
             }
 
+            // حذف العناصر من سلة التسوق بعد حفظ التذاكر
+            foreach (var cart in cartItems)
+            {
+                cartRepository.Delete(cart);
+            }
+            cartRepository.Commit();
+
             var service = new SessionService();
-            var session = service.Create(options); 
+            var session = service.Create(options);
             return Redirect(session.Url);
         }
+
 
 
 

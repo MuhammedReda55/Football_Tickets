@@ -84,12 +84,12 @@
                         <div class="mb-3">
                             <label for="ticketSelect_@match.MatchId" class="form-label h5">Booked Tickets</label>
                             <select id="ticketSelect_@match.MatchId" class="form-select">
-                                @if (Model.MatchTickets.ContainsKey(match.MatchId) && Model.MatchTickets[match.MatchId].Any())
+                                @if (Model.MatchBooking != null && Model.MatchBooking.ContainsKey(match.MatchId) && Model.MatchBooking[match.MatchId].Any())
                                 {
-                                    @foreach (var ticket in Model.MatchTickets[match.MatchId])
+                                    @foreach (var booking in Model.MatchBooking[match.MatchId])
                                     {
                                         <option>
-                                            Seat: @ticket.Seatnumber, Section: @ticket.SectionId, Price: @ticket.SectionPrice EGP
+                                            Seat: @booking.Ticket.Seatnumber, Section: @booking.Ticket.SectionId, Price: @booking.Ticket.SectionPrice EGP
                                         </option>
                                     }
                                 }

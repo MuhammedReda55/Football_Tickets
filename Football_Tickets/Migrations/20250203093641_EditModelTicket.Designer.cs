@@ -4,6 +4,7 @@ using Football_Tickets.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Football_Tickets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250203093641_EditModelTicket")]
+    partial class EditModelTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +95,6 @@ namespace Football_Tickets.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
@@ -108,8 +108,6 @@ namespace Football_Tickets.Migrations
 
                     b.HasKey("BookingId")
                         .HasName("PK__Booking__73951ACDFFB44174");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("MatchId");
 
@@ -203,7 +201,7 @@ namespace Football_Tickets.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
 
-                    b.Property<decimal?>("Amount")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<DateTime>("Date")
@@ -542,10 +540,6 @@ namespace Football_Tickets.Migrations
 
             modelBuilder.Entity("Football_Tickets.Models.Booking", b =>
                 {
-                    b.HasOne("Football_Tickets.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Football_Tickets.Models.Match", "Match")
                         .WithMany("Bookings")
                         .HasForeignKey("MatchId")
@@ -557,8 +551,6 @@ namespace Football_Tickets.Migrations
                         .HasForeignKey("TicketId")
                         .IsRequired()
                         .HasConstraintName("FK__Booking__TicketI__4F7CD00D");
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Match");
 
