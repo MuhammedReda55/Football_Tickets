@@ -13,7 +13,7 @@ public partial class Payment
 
     public string? Method { get; set; }
 
-    public decimal Amount { get; set; }
+    public decimal? Amount { get; set; }
 
-    public virtual Ticket Ticket { get; set; } = null!;
+    public virtual Ticket? Ticket { get; set; } = null!;
 }

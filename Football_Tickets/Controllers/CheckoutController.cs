@@ -39,102 +39,48 @@ public class CheckoutController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        var cartItems = cartRepository.Get(
+        var tickets = ticketRepository.Get(
             includeProps: [e => e.Match, e => e.Match.Stadium, e => e.Match.HomeTeam, e => e.Match.AwayTeam],
-            filter: e => e.ApplicationUserId == user.Id
+            filter: e => e.MatchId != null 
         ).ToList();
 
-        if (cartItems == null || !cartItems.Any())
+        if (!tickets.Any())
         {
-            TempData["message"] = "سلة التسوق فارغة.";
+            TempData["message"] = "لم يتم العثور على تذاكر.";
             return RedirectToAction("Index", "Home");
         }
 
-        foreach (var cart in cartItems)
+        foreach (var ticket in tickets)
         {
-            // استخراج `SectionId` وسعر التذكرة بناءً على القسم
-            int sectionId = cart.section switch
-            {
-                "Section1" => 1,
-                "Section2" => 2,
-                "Section3" => 3,
-                _ => 0
-            };
-
-            decimal sectionPrice = cart.section switch
-            {
-                "Section1" => cart.Match.Section1Price ?? 0,
-                "Section2" => cart.Match.Section2Price ?? 0,
-                "Section3" => cart.Match.Section3Price ?? 0,
-                _ => 0
-            };
-
-            // إنشاء وحفظ التذكرة `Ticket`
-            var ticket = new Ticket
-            {
-                MatchId = cart.MatchId,
-                SectionId = sectionId,
-                Seatnumber = cart.SeatNumber,
-                StadiumId = cart.Match.StadiumId,
-                SectionPrice = sectionPrice
-            };
-            ticketRepository.Create(ticket);
-            ticketRepository.Commit();
-
-            // حفظ الحجز `Booking`
-            var booking = new Booking
-            {
-                MatchId = cart.MatchId,
-                TicketId = ticket.TicketId,
-                Date = DateTime.Now
-            };
-            bookingRepository.Create(booking);
-            bookingRepository.Commit();
-
-            // حفظ الدفع `Payment`
+            // إنشاء سجل الدفع
             var payment = new Payment
             {
                 TicketId = ticket.TicketId,
                 Date = DateTime.Now,
                 Method = "Credit Card",
-                Amount = sectionPrice
+                Amount = ticket.SectionPrice
             };
             paymentRepository.Create(payment);
             paymentRepository.Commit();
         }
 
-        foreach (var cart in cartItems)
-        {
-            cartRepository.Delete(cart);
-        }
-        cartRepository.Commit();
-
-        // Now prepare the email
-        var firstItem = cartItems.First();
-        decimal ticketPrice = firstItem.section switch
-        {
-            "Section1" => firstItem.Match.Section1Price ?? 0,
-            "Section2" => firstItem.Match.Section2Price ?? 0,
-            "Section3" => firstItem.Match.Section3Price ?? 0,
-            _ => 0
-        };
+        
+        var firstTicket = tickets.First();
 
         var ticketDetails = new TicketDetailsVM
         {
             UserName = user.UserName,
             Email = user.Email,
-            HomeTeam = firstItem.Match.HomeTeam.TeamName,
-            AwayTeam = firstItem.Match.AwayTeam.TeamName,
-            StadiumName = firstItem.Match.Stadium.Name,
-            Section = firstItem.section,
-            Price = ticketPrice,
-            SeatNumber = firstItem.SeatNumber,
-            Count = cartItems.Sum(e => e.Count),
-            TotalPrice = cartItems.Sum(e => ticketPrice * e.Count),
-            Date = firstItem.Match.MatchDate
+            HomeTeam = firstTicket.Match.HomeTeam.TeamName,
+            AwayTeam = firstTicket.Match.AwayTeam.TeamName,
+            StadiumName = firstTicket.Match.Stadium.Name,
+            Section = firstTicket.Sections,
+            Price = firstTicket.SectionPrice,
+            SeatNumber = firstTicket.Seatnumber,
+            Count = tickets.Count,
+            TotalPrice = tickets.Sum(e => e.SectionPrice),
+            Date = firstTicket.Match.MatchDate
         };
-
-        var jsonTicketDetails = JsonConvert.SerializeObject(ticketDetails);
 
         string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/templates/TicketDetailsTemplate.html");
         string emailTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
@@ -146,17 +92,17 @@ public class CheckoutController : Controller
             .Replace("{{AwayTeam}}", ticketDetails.AwayTeam)
             .Replace("{{StadiumName}}", ticketDetails.StadiumName)
             .Replace("{{Section}}", ticketDetails.Section)
-            .Replace("{{Price}}", ticketDetails.Price.ToString("F2"))
+            .Replace("{{Price}}", ticketDetails.Price?.ToString("F2") ?? "0.00")
+
             .Replace("{{SeatNumber}}", ticketDetails.SeatNumber?.ToString() ?? "غير محدد")
             .Replace("{{Count}}", ticketDetails.Count.ToString())
-            .Replace("{{TotalPrice}}", ticketDetails.TotalPrice.ToString("F2"))
+            .Replace("{{TotalPrice}}", ticketDetails.TotalPrice?.ToString("F2") ?? "0.00")
             .Replace("{{Date}}", ticketDetails.Date.ToString("yyyy-MM-dd HH:mm"));
 
-        // Send the email to the user
+        // إرسال الإيميل للمستخدم
         await emailSender.SendEmailAsync(user.Email, "تأكيد حجز التذكرة", emailBody);
 
-        TempData["message"] = "تم الدفع بنجاح، وتم حفظ التذاكر.";
-        //return RedirectToAction("Success");
+        TempData["message"] = "تم الدفع بنجاح، وتم تأكيد الحجز.";
         return View();
     }
 
@@ -169,31 +115,28 @@ public class CheckoutController : Controller
         var userId = userManager.GetUserId(User);
 
         
-        var tickets = ticketRepository.Get(
-            includeProps: [e => e.Match, e => e.Match.Stadium, e => e.Match.HomeTeam, e => e.Match.AwayTeam],
-            filter: e => e.Bookings.Any(b => b.MatchId == e.MatchId)
-        );
+        var lastBooking = bookingRepository.Get(
+            includeProps: [e => e.Ticket, e => e.Ticket.Match, e => e.Ticket.Match.Stadium, e => e.Ticket.Match.HomeTeam, e => e.Ticket.Match.AwayTeam],
+            filter: e => e.ApplicationUserId == userId
+        ).OrderByDescending(e => e.Date).FirstOrDefault();
 
-        if (!tickets.Any())
+        if (lastBooking == null)
         {
-            TempData["message"] = "لا توجد تذاكر محجوزة!";
+            TempData["message"] = "لم يتم العثور على أي حجوزات!";
             return RedirectToAction("Index", "Home");
         }
 
-        var username = userManager.GetUserName(User);
-
-        double totalPrice = tickets.Sum(e => (double)(e.SectionPrice ?? 0));
-
-         
         var ticketDetails = new TicketWithTotalPriceVM
         {
-            Tickets = tickets.ToList(),
-            UserName = username,
-            TotalPrice = totalPrice
+            Tickets = new List<Ticket> { lastBooking.Ticket },
+            UserName = userManager.GetUserName(User),
+            TotalPrice = (double)(lastBooking.Ticket.SectionPrice ?? 0)
         };
 
         return View(ticketDetails);
     }
+
+
 
 
 }

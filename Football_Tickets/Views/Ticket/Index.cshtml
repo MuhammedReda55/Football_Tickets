@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Football_Tickets.Models.Ticket>
+
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]')
+        </script>
+    }
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary">Ticket List</h2>
+        @* <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Create New Ticket</a> *@
+    </div>
+
+    <table class="table table-striped table-hover table-bordered text-center shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.TicketId)</th>
+                <th>@Html.DisplayNameFor(model => model.Seatnumber)</th>
+                <th>@Html.DisplayNameFor(model => model.Section)</th>
+                <th>@Html.DisplayNameFor(model => model.SectionPrice)</th>
+                <th>Match</th>
+                <th>@Html.DisplayNameFor(model => model.Stadium)</th>
+                @* <th>Actions</th> *@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TicketId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Seatnumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Sections)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SectionPrice) $</td>
+                    <td>
+                        <strong>@Html.DisplayFor(modelItem => item.Match.HomeTeam.TeamName)</strong>
+                        <span class="text-danger">VS</span>
+                        <strong>@Html.DisplayFor(modelItem => item.Match.AwayTeam.TeamName)</strong>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Stadium.Location)</td>
+                    @* <td> *@
+                        @* <a asp-action="Edit" asp-route-id="@item.TicketId" class="btn btn-warning btn-sm"> *@
+                        @*     <i class="fas fa-edit"></i> Edit *@
+                        @* </a> *@
+
+                        @* <a href="/Ticket/Delete?@item.TicketId=ticketId" class="btn btn-danger btn-sm"> *@
+                        @*     <i class="fas fa-trash"></i> Delete *@
+                        @* </a> *@
+                    @* </td> *@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- إضافة FontAwesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

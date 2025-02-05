@@ -33,20 +33,10 @@
                 color: #343a40;
             }
 
-            .ticket-header p {
-                font-size: 14px;
-                color: #6c757d;
-            }
-
         .ticket-details {
             font-size: 16px;
             text-align: right;
         }
-
-            .ticket-details .detail-label {
-                font-weight: bold;
-                color: #495057;
-            }
 
         .divider {
             border-top: 2px dashed #dee2e6;
@@ -61,17 +51,6 @@
         .btn-print {
             width: 150px;
         }
-
-        .ticket-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .ticket-details-wrapper {
-            flex: 1;
-            margin-right: 20px;
-        }
     </style>
 </head>
 <body>
@@ -83,28 +62,28 @@
                 <p>شكرًا لاختيارك خدمتنا لحجز التذاكر</p>
             </div>
 
-            <div class="ticket-details">
-                <p><span class="detail-label">اسم المستخدم:</span> @Model.UserName</p>
-            </div>
-
-            @foreach (var item in Model.Tickets)
+            @if (Model.Tickets.Any())
             {
-                <div class="ticket-row">
-                    <div class="ticket-details-wrapper">
-                        <p><span class="detail-label">المباراة:</span> @item.Match.HomeTeam.TeamName VS @item.Match.AwayTeam.TeamName</p>
-                        <p><span class="detail-label">الملعب:</span> @item.Match.Stadium.Name</p>
-                        <p><span class="detail-label">التاريخ:</span> @item.Match.MatchDate.ToString("yyyy-MM-dd HH:mm")</p>
-                        <p><span class="detail-label">المقعد:</span> @(item.Seatnumber?.ToString() ?? "غير محدد")</p>
-                        <p><span class="detail-label">القسم:</span> @item.SectionId</p>
-                        <p><span class="detail-label">السعر:</span> @item.SectionPrice EGP</p>
-                    </div>
+                var item = Model.Tickets.First();
+                <div class="ticket-details">
+                    <p><span class="detail-label">اسم المستخدم:</span> @Model.UserName</p>
+                    <p><span class="detail-label">المباراة:</span> @item.Match.HomeTeam.TeamName VS @item.Match.AwayTeam.TeamName</p>
+                    <p><span class="detail-label">الملعب:</span> @item.Match.Stadium.Name</p>
+                    <p><span class="detail-label">التاريخ:</span> @item.Match.MatchDate.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p><span class="detail-label">المقعد:</span> @(item.Seatnumber?.ToString() ?? "غير محدد")</p>
+                    <p><span class="detail-label">القسم:</span> @item.SectionId</p>
+                    <p><span class="detail-label">السعر:</span> @item.SectionPrice EGP</p>
                 </div>
-                <hr />
-            }
 
-            <div class="ticket-details">
-                <p><span class="detail-label">إجمالي السعر:</span> @Model.TotalPrice EGP</p>
-            </div>
+                <hr />
+                <div class="ticket-details">
+                    <p><span class="detail-label">إجمالي السعر:</span> @Model.TotalPrice EGP</p>
+                </div>
+            }
+            else
+            {
+                <p>لا توجد تذاكر متاحة للعرض.</p>
+            }
 
             <div class="divider"></div>
 

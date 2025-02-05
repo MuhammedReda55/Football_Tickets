@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using Football_Tickets.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -216,4 +217,5 @@ public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    
 }

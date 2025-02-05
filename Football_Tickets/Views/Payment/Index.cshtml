@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Football_Tickets.Models.Payment>
+
+@{
+    ViewData["Title"] = "Ticket Payments";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Payment Details</h2>
+
+    
+
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>Ticket Number</th>
+                <th>Payment Date</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-dark">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.TicketId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Method)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table thead {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-success {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .table td, .table th {
+        padding: 15px;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
