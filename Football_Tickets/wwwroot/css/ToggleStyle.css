@@ -13,6 +13,7 @@
     color:#ddd
 }
 .navStyle {
-    border-radius:5px;
-    background-color:rgba(10,10,255,0.9);
+    border-radius: 5px;
+    /* background-color: rgba(10,10,255,0.9);*/
+    background-color: #003366
 }

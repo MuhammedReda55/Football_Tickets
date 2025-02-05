@@ -51,6 +51,10 @@ namespace Football_Tickets.Controllers
         {
             return View();
         }
+        public IActionResult Newpage()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

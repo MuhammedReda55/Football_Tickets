@@ -1,0 +1,47 @@
+﻿/* تنسيق الهيدر */
+.header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 0;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* تنسيق القسم الرئيسي */
+.hero {
+    background: url('/Images/permier.png') no-repeat center center/cover;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* تنسيق لوحة النتيجة */
+.scoreboard {
+    background: #111;
+    color: white;
+    padding: 20px;
+}
+
+.team {
+    padding: 20px;
+    font-size: 24px;
+}
+
+.win {
+    background: #000;
+    color: white;
+}
+
+.loss {
+    background: red;
+    color: white;
+}
+
+.vs {
+    font-size: 30px;
+    font-weight: bold;
+}

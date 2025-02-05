@@ -164,3 +164,16 @@
   background-position-x:40px;
     width:24px;
 }
+.design-bo {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('/Images/skysports-premier-league.jpg'); /* ضع رابط الصورة هنا */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+.shadow-text {
+    text-shadow: 2px 2px 4px #4407ff;
+}
