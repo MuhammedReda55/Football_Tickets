@@ -95,6 +95,7 @@ namespace Football_Tickets.Controllers
         }
 
 
+
         [HttpPost]
         public async Task<IActionResult> Register(ApplicationUserVM UserVM)
         {

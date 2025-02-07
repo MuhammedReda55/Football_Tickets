@@ -5,13 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\Images\chel.jfif" />
-    <Content Remove="wwwroot\Images\liver.jfif" />
-    <Content Remove="wwwroot\Images\manches.jfif" />
-    <Content Remove="wwwroot\Images\united.jfif" />
-  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.11" />

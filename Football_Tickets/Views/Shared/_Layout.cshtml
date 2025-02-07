@@ -21,7 +21,12 @@
 
 
     <link rel="stylesheet" href="~/Football_Tickets.styles.css" asp-append-version="true" />
+    <style>
+        .ImagePadding {
+            padding-left: 20%;
 
+        }
+    </style>
 
 </head>
 <body class="custom-body-background">
@@ -30,6 +35,7 @@
 
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="background-color:white">
+
             <div class="container-fluid navStyle">
 
                 <a class="navbar-brand d-flex align-items-center" href="/">
@@ -91,7 +97,7 @@
                             <div class="nav-item dropdown d-flex align-items-center ">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center fw-bold text-dark" data-bs-toggle="dropdown" href="#" role="button">
                                     <img src="~/Photo_Users/@UserManeger.GetUserAsync(User).Result.photo" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
-                                    <span class="nameColor">@User.Identity.Name </span>
+                                    <a style="text-decoration:none" href="/Account/Profile"> <span class="nameColor">@User.Identity.Name </span></a>
                                 </a>
                                 @* <div class="dropdown-menu">
                             <a class="dropdown-item" asp-controller="Account" asp-action="Profile">My Profile</a>
@@ -180,33 +186,76 @@
         </nav>
 
         <div id="carouselExampleSlidesOnly" class="carousel slide " data-bs-ride="carousel">
-            <div class="carousel-inner logos-container justify-content-start">
+            <div class="carousel-inner logos-container justify-content-start " style="height:10%">
+
                 <div class="carousel-item active ">
-                    <div>
-                        <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    <div class="d-inline-block">
+                        <img src="~/carouseteamlogo/arsenallogo.jpeg" alt="arsenal" width="50px">
                     </div>
-                    @* <div>
-                    <img src="~/Images/united.jfif" class="ps-1" alt="United" width="50" />
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/aston-villalogo.jpeg" alt="aston-villa" width="50">
                     </div>
-                    <div>
-                    <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/bournemouthlogo.jpeg" alt="bournemouth" width="50">
                     </div>
-                    <div>
-                    <img src="~/Images/liver.jfif" class="" alt="LiverPool" width="50">
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/brentfordlogo.jpeg" alt="brentford" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/brightonlogo.jpeg" alt="brighton" width="50">
                     </div>
 
-
-                    <img src="~/Images/chel.jfif" class="ps-1" alt="Chelsea" width="50" />
-                    <img src="~/Images/Wes.png" class="ps-1" alt="Wes" width="50" height="50" /> *@
                 </div>
                 <div class="carousel-item">
-                    <img src="~/Images/united.jfif" alt="United" width="50" />
+                    <div class="d-inline-block">
+                        <img src="~/carouseteamlogo/burnleylogo.jpeg" alt="burnley" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/chelsealogo.jpeg" alt="chelsea" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/crystal-palacelogo.jpeg" alt="crystal-palace" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/evertonlogo.jpeg" alt="everton" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/fulhamlogo.jpeg" alt="fulham" width="50">
+                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="~/Images/chel.jfif" alt="Chelsea" width="50" />
+                    <div class="d-inline-block">
+                        <img src="~/carouseteamlogo/liverpoollogo.jpeg" alt="liverpool" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/luton-townlogo.jpeg" alt="luton-town" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/manchestercity-logo.jpeg" alt="manchestercity" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/manchesterunited-logo.jpeg" alt="manchesterunited" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/newcastle-unitedlogo.jpeg" alt="newcastle-united" width="50">
+                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="~/Images/Wes.png" alt="Wes" width="50" height="50" />
+                    <div class="d-inline-block">
+                        <img src="~/carouseteamlogo/nottingham-forestlogo.jpeg" alt="nottingham-forest" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/sheffield-unitedlogo.jpeg" alt="sheffield-united" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/tottenham-hotspurlogo.jpeg" alt="tottenham-hotspur" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/west-ham-unitedlogo.jpeg" alt="west-ham-united" width="50">
+                    </div>
+                    <div class="d-inline-block ImagePadding">
+                        <img src="~/carouseteamlogo/wolverhamptonlogo.jpeg" alt="wolverhampton" width="50">
+                    </div>
                 </div>
             </div>
         </div>

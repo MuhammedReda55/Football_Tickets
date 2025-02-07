@@ -1,0 +1,127 @@
+﻿@model Football_Tickets.Models.ViewModels.MatchDetailsVM
+
+<style>
+    /* تحسين عرض الصورة مع تأثير الزووم */
+    .stadium-img-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+        .stadium-img-container img {
+            width: 100%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .stadium-img-container:hover img {
+            transform: scale(1.1);
+        }
+
+    /* تحسين تنسيق النصوص */
+    .match-info {
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+        .match-info p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+    /* تحسين تنسيق الفورم */
+    .booking-form {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+        .booking-form label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .booking-form .form-control {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+    /* زر الحجز */
+    .btn-book {
+        background-color: #28a745;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background 0.3s;
+        width: 100%;
+    }
+
+        .btn-book:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row mb-4 text-center">
+        <div class="col-5">
+            <img src="~/Logo_Teams/@Model.Match.HomeTeam.LogoUrl" class="img-fluid" style="max-height: 70px;" />
+            <p class="mt-2 match-info">@Model.Match.HomeTeam.TeamName</p>
+        </div>
+
+        <div class="col-2 align-self-center">
+            <p class="match-info">VS</p>
+        </div>
+
+        <div class="col-5">
+            <img src="~/Logo_Teams/@Model.Match.AwayTeam.LogoUrl" class="img-fluid" style="max-height: 70px;" />
+            <p class="mt-2 match-info">@Model.Match.AwayTeam.TeamName</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="stadium-img-container">
+                <img src="~/Stadium_Images.jpeg" alt="@Model.Match.Stadium.Name" class="img-fluid rounded">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="match-info">
+                <p><strong>🏟 Stadium:</strong> @Model.Match.Stadium.Name</p>
+                <p><strong>📍 Location:</strong> @Model.Match.Stadium.Location</p>
+                <p><strong>📅 Date:</strong> @Model.Match.MatchDate</p>
+                <p><strong>🎟 Booked Tickets:</strong> @Model.BookedTickets</p>
+            </div>
+
+            <div class="booking-form mt-3">
+                <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                    <input type="hidden" name="MatchId" value="@Model.Match.MatchId" />
+
+                    <div class="form-group">
+                        <label for="seatNumber">Enter Seat Number:</label>
+                        <input type="number" id="seatNumber" name="SeatNumber" class="form-control" required />
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label for="section">Select Section:</label>
+                        <select id="section" name="section" class="form-control" required>
+                            <option value="Section1">Section 1 - $@Model.Match.Section1Price</option>
+                            <option value="Section2">Section 2 - $@Model.Match.Section2Price</option>
+                            <option value="Section3">Section 3 - $@Model.Match.Section3Price</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-book">Book Ticket</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

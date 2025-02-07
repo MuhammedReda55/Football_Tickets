@@ -18,5 +18,6 @@ namespace Football_Tickets.Models
         public string section { get; set; }
         public int? SeatNumber { get; set; }
         public DateTime Time { get; set; }
+        public DateTime ExpireTime { get; set; }
     }
 }

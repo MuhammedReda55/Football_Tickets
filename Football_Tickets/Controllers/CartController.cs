@@ -29,19 +29,28 @@ namespace Football_Tickets.Controllers
         }
         public IActionResult Index()
         {
+            var userId = userManager.GetUserId(User);
 
+            
+            var expiredCarts = cartRepository.Get(filter: c => c.ExpireTime < DateTime.Now).ToList();
+            foreach (var expiredCart in expiredCarts)
+            {
+                cartRepository.Delete(expiredCart);
+            }
+            cartRepository.Commit();
+
+           
             var cart = cartRepository.Get(
-                includeProps: [e => e.Match.AwayTeam, e => e.Match.HomeTeam, e => e.Match.Stadium], // Include Match for navigation properties
-                filter: e => e.ApplicationUserId == userManager.GetUserId(User)
+                includeProps: [e => e.Match.AwayTeam, e => e.Match.HomeTeam, e => e.Match.Stadium],
+                filter: e => e.ApplicationUserId == userId
             );
 
-
             double totalPrice = cart.Sum(e =>
-        e.section == "Section1" ? (double)(e.Match.Section1Price ?? 0) * e.Count :
-        e.section == "Section2" ? (double)(e.Match.Section2Price ?? 0) * e.Count :
-        e.section == "Section3" ? (double)(e.Match.Section3Price ?? 0) * e.Count :
-        0
-    );
+                e.section == "Section1" ? (double)(e.Match.Section1Price ?? 0) * e.Count :
+                e.section == "Section2" ? (double)(e.Match.Section2Price ?? 0) * e.Count :
+                e.section == "Section3" ? (double)(e.Match.Section3Price ?? 0) * e.Count :
+                0
+            );
 
             CartWithTotalPriceVM cartWithTotal = new CartWithTotalPriceVM()
             {
@@ -53,14 +62,15 @@ namespace Football_Tickets.Controllers
         }
 
 
+
         public IActionResult AddToCart(int MatchId, int count = 1, int SeatNumber = 1, string section = "Section1")
         {
             var userId = userManager.GetUserId(User);
             if (userId != null)
             {
-
                 var cart = cartRepository.GetOne(filter: c => c.ApplicationUserId == userId && c.MatchId == MatchId && c.SeatNumber == SeatNumber && c.section == section);
-                if (cart != null) {
+                if (cart != null)
+                {
                     TempData["message"] = "هذا المقعد محجوز بالفعل لهذه المباراة، يرجى اختيار مقعد آخر.";
                     return RedirectToAction("Index", "Home");
                 }
@@ -73,18 +83,6 @@ namespace Football_Tickets.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                
-               
-
-                var totalSeats = _bookingRepository.Get(filter: t => t.MatchId == MatchId).Count();
-                var match = _matchRepository.GetOne(m => m.MatchId == MatchId, includeProps: [e => e.Stadium]);
-                if (totalSeats + count > match.Stadium.Capacity)
-                {
-                    TempData["message"] = "الملعب ممتلئ بالكامل، لا توجد مقاعد متاحة.";
-                    return RedirectToAction("Index", "Home");
-                }
-
-                
                 cartRepository.Create(new Cart
                 {
                     ApplicationUserId = userId,
@@ -92,7 +90,8 @@ namespace Football_Tickets.Controllers
                     SeatNumber = SeatNumber,
                     section = section,
                     MatchId = MatchId,
-                    Time = DateTime.Now
+                    Time = DateTime.Now,
+                    ExpireTime = DateTime.Now.AddDays(1) 
                 });
 
                 cartRepository.Commit();

@@ -1,4 +1,46 @@
-﻿@model Football_Tickets.Models.ViewModels.ApplicationUserVM
+﻿
+<style>
+    .bgImage {
+        background: url('/images/stadium.jpg') no-repeat center center/cover;
+        min-height: 100vh;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        color:white;
+        font-weight:bold;
+    }
+    .sectinstyle{
+        background-color:rgba(5,5,5,0.4)
+    }
+    .profileTitle{
+        font-size:50px;
+        font-weight:bold;
+        color:rgb(255,255,255);
+    }
+    .inputField{
+        background-color:rgba(240,240,240,.3);
+        color:white;
+        font-weight:bold;
+    }
+    .formStyleText{
+        
+        border-radius:10px 0 0 10px;
+        
+    }
+    .formStyleImage{
+        border-radius:0 10px 10px 0;
+        
+    }
+
+    .ChangePassword{
+        color: #41d755;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #00000091;
+    }
+
+</style>
+@model Football_Tickets.Models.ViewModels.ApplicationUserVM
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
@@ -6,53 +48,53 @@
     ViewData["Title"] = "Profile";
 }
 
-<div class="container mt-5">
-    <h1 class="text-center text-primary mb-4"><b>Profile</b></h1>
-    <hr />
+<div class="container bgImage ">
+    
+    <p class="profileTitle text-center ">Profile</p>
+    <div class="row rounded-2 " style="">
 
-    <div class="row">
         <!-- Profile Form -->
-        <div class="col-md-6">
-            <form asp-action="Profile">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6 sectinstyle pt-3 formStyleText " >
+            <form asp-action="Profile" style="margin-top:6.5px;">
+                <div asp-validation-summary="ModelOnly" class="text-danger "></div>
 
                 <!-- Username -->
-                <div class="form-group mb-3">
-                    <label asp-for="UserName" class="form-label"></label>
-                    <input asp-for="UserName" class="form-control" />
+                <div class="form-group mb-3" >
+                    <label asp-for="UserName" class="form-label" ></label>
+                    <input asp-for="UserName" class="form-control inputField " />
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
 
                 <!-- Email -->
                 <div class="form-group mb-3">
                     <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control inputField" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <!-- Name -->
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="form-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control inputField" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <!-- Address -->
                 <div class="form-group mb-4">
                     <label asp-for="Address" class="form-label"></label>
-                    <input asp-for="Address" class="form-control" />
+                    <input asp-for="Address" class="form-control inputField" />
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
 
                 <!-- Submit Button -->
-                <div class="form-group text-center">
+                <div class="form-group text-center pb-2 mt-0">
                     <input type="submit" value="Save Changes" class="btn btn-primary btn-lg" />
                 </div>
             </form>
         </div>
 
         <!-- Profile Photo Section -->
-        <div class="col-md-6 text-center">
+        <div class="col-md-6 text-center sectinstyle pt-3 formStyleImage" ;">
             <!-- Current Profile Photo -->
             <div class="mb-4">
                 <img id="profilePhoto" src="~/Photo_Users/@UserManager.GetUserAsync(User).Result.photo" class="rounded-circle" width="300px" height="300px" style="object-fit: cover; border: 2px solid #007bff;" />
@@ -62,17 +104,17 @@
             <form action="updatePhoto" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="photo" class="form-label">Upload New Photo</label>
-                    <input type="file" name="photo" id="photo" class="form-control" onchange="previewPhoto(event)" />
+                    <input type="file" name="photo" id="photo" class="form-control inputField" onchange="previewPhoto(event)" />
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg">Update Photo</button>
+                <button type="submit" class="btn btn-primary btn-lg " style="margin-top:16px">Update Photo</button>
             </form>
         </div>
     </div>
 
     <hr class="my-4" />
     <!-- Change Password Link -->
-    <div class="text-center mt-4">
-        <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-link text-decoration-none" style="font-size: 1.5rem; font-weight: bold; color: #007bff;">
+    <div class="text-center mt-4 " >
+        <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-link text-decoration-none ChangePassword" >
             <i class="bi bi-key-fill me-2"></i>Change Password
         </a>
     </div>

@@ -1,0 +1,111 @@
+﻿<style>
+    .cardBG {
+        color: white;
+        background: url('/images/DALL·E.jpg') no-repeat center center/cover;
+        opacity: 1;
+    }
+
+    .blackText {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        background-color: rgba(240,240,240,.3);
+        border-radius: 5px;
+    }
+
+
+    .wightText {
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+</style>
+
+@model Football_Tickets.Models.ViewModels.HomeVM
+
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]')
+        </script>
+    }
+}
+
+<div class="container bg-secondary  rounded-2 ">
+
+    
+
+
+
+
+    <div class="row " style="">
+        @foreach (var match in Model.Matches)
+        {
+            <div class="col-md-4 pb-2  ">
+                <div class="card  shadow hover-effect  h-100  " style="">
+                    <div class="card-body text-center bg-light rounded-2 cardBG " style="">
+                        <div class="row mb-1 ">
+                            <!-- Home Team Logo and Name -->
+                            <div class="col-5 text-right ">
+                                <img src="~/Logo_Teams/@match.HomeTeam.LogoUrl" alt="@match.HomeTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
+                                <p class="mt-2 wightText ">@match.HomeTeam.TeamName</p>
+                            </div>
+
+                            <!-- VS -->
+                            <div class="col-2 align-self-center">
+                                <p class=" wightText">VS</p>
+                            </div>
+
+                            <!-- Away Team Logo and Name -->
+                            <div class="col-5 text-left">
+                                <img src="~/Logo_Teams/@match.AwayTeam.LogoUrl" alt="@match.AwayTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
+                                <p class="mt-2 wightText ">@match.AwayTeam.TeamName</p>
+                            </div>
+                        </div>
+
+                        <!-- Match Date and Stadium -->
+                        <p class="wightText"><span class="fw-bold">Date:</span> @match.MatchDate</p>
+                        @* <p><strong>Date:</strong> @match.MatchTime</p> *@
+
+
+                        <p class="wightText"><span class="fw-bold">Stadium</span> @match.Stadium.Name</p>
+                        <p class="blackText"><span class="fw-bold">Location:</span>@match.Stadium.Location</p>
+
+                        <div class="mb-3">
+                            <label for="ticketSelect_@match.MatchId" class="form-label h5">Booked Tickets</label>
+                            <select id="ticketSelect_@match.MatchId" class="form-select">
+                                @if (Model.MatchBooking != null && Model.MatchBooking.ContainsKey(match.MatchId) && Model.MatchBooking[match.MatchId].Any())
+                                {
+                                    @foreach (var booking in Model.MatchBooking[match.MatchId])
+                                    {
+                                        <option>
+                                            Seat: @booking.Ticket.Seatnumber, Section: @booking.Ticket.SectionId, Price: @booking.Ticket.SectionPrice EGP
+                                        </option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option>No tickets booked</option>
+                                }
+                            </select>
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="row mb-4 justify-content-center">
+                             <div class=" col-12"> 
+                           
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@match.MatchId" class="btn btn-primary">
+                                Show Details
+                            </a>
+                             </div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

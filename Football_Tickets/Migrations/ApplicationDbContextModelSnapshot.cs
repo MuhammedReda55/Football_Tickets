@@ -129,6 +129,9 @@ namespace Football_Tickets.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("ExpireTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("SeatNumber")
                         .HasColumnType("int");
 
