@@ -1,21 +1,56 @@
 ﻿@model Football_Tickets.Models.Cart
+@{
+    Layout = null;
+}
+<style>
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    .dropList {
+        font-weight: bold;
+        background: rgb(0,0,0,.2);
+        color: black; /* Text color */
+        border: 1px solid #ccc; /* Border styling */
+        padding: 10px;
+        border-radius: 5px; /* Rounded corners */
+        font-size: 16px;
+    }
+
+        /* Change background when selected */
+        .dropList:focus {
+            background-color: rgba(0,0,0,.2);
+            border-color: #007bff; /* Highlight border */
+            font-weight: bold;
+            color: black;
+            outline: none;
+        }
+
+</style>
 <h2>Edit Seat & Section</h2>
 
 <form asp-action="EditSeat" asp-controller="Cart" method="post">
     <input type="hidden" asp-for="MatchId" />
 
-    <div class="form-group">
+    <div class="form-group ">
         <label for="SeatNumber">Seat Number:</label>
-        <input type="number" asp-for="SeatNumber" class="form-control" required />
+        <input type="number" asp-for="SeatNumber" class="form-control dropList" required />
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label for="section">Select Section:</label>
+
         @Html.DropDownListFor(model => model.section,
                  new SelectList(new[] { "Section1", "Section2", "Section3" }),
                  "Select a Section",
-                 new { @class = "form-control", required = "required" })
+                 new { @class = "form-control dropList", required = "required" })
+
     </div>
 
     <button type="submit" class="btn btn-success">Save Changes</button>

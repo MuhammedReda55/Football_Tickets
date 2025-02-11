@@ -1,28 +1,57 @@
 ﻿<style>
-    .cardBG {
-        color: white;
-        background: url('/images/DALL·E.jpg') no-repeat center center/cover;
-        opacity:1;
-    }
-    
-    .blackText{
-        color:black;
-        font-weight:bold;
-        font-size:18px;
-        background-color:rgba(240,240,240,.3);
-        border-radius:5px;
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f8f9fa;
     }
 
-    
-    .wightText{
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
+    .container {
+        padding: 20px;
     }
 
-     
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        background: linear-gradient(to right, #004d7a, #008793);
+        color: white;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .team-logo {
+        max-height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .match-info {
+        font-size: 16px;
+    }
+
+    .btn-custom {
+        background: #ff4b5c;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: background 0.3s;
+    }
+
+        .btn-custom:hover {
+            background: #ff1e3c;
+        }
 </style>
-
 @model Football_Tickets.Models.ViewModels.HomeVM
 
 @section Scripts {
@@ -33,55 +62,34 @@
         </script>
     }
 }
+<div class="container">
+    <div class="header">
+        <h2 class="fw-bold text-primary">Upcoming Matches</h2>
+    </div>
 
-<div class="container bg-secondary  rounded-2 ">
-
-    <form asp-action="Search" method="get">
-        <select class="form-select inputField fw-bold" id="dropdown" name="name" style="color:black;border-color:black;" onchange="this.form.submit()">
-            <option selected disabled>Select team</option>
-            @foreach (var item in Model.Matches)
-            {
-                <option value="@item.HomeTeam.TeamName">@item.HomeTeam.TeamName</option>
-            }
-        </select>
-    </form>
-
-
-    
-
-    <div class="row " style="">
+    <div class="row ">
         @foreach (var match in Model.Matches)
         {
-            <div class="col-md-4 pb-2  " >
-                <div class="card  shadow hover-effect  h-100  " style="">
-                    <div class="card-body text-center bg-light rounded-2 cardBG " style="">
-                        <div class="row mb-1 ">
-                            <!-- Home Team Logo and Name -->
-                            <div class="col-5 text-right ">
-                                <img src="~/Logo_Teams/@match.HomeTeam.LogoUrl" alt="@match.HomeTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
-                                <p class="mt-2 wightText ">@match.HomeTeam.TeamName</p>
+            <div class="col-md-4 mb-4 ">
+                <div class="card shadow h-100">
+                    <div class="card-body ">
+                        <div class="row align-items-center ">
+                            <div class="col-5 text-end">
+                                <img src="~/Logo_Teams/@match.HomeTeam.LogoUrl" alt="@match.HomeTeam.TeamName Logo" class="team-logo" />
+                                <p class="fw-bold">@match.HomeTeam.TeamName</p>
                             </div>
-
-                            <!-- VS -->
-                            <div class="col-2 align-self-center">
-                                <p class=" wightText">VS</p>
+                            <div class="col-2 text-center">
+                                <p class="fw-bold">VS</p>
                             </div>
-
-                            <!-- Away Team Logo and Name -->
-                            <div class="col-5 text-left">
-                                <img src="~/Logo_Teams/@match.AwayTeam.LogoUrl" alt="@match.AwayTeam.TeamName Logo" class="img-fluid " style="max-height: 50px;" />
-                                <p class="mt-2 wightText ">@match.AwayTeam.TeamName</p>
+                            <div class="col-5 text-start">
+                                <img src="~/Logo_Teams/@match.AwayTeam.LogoUrl" alt="@match.AwayTeam.TeamName Logo" class="team-logo" />
+                                <p class="fw-bold">@match.AwayTeam.TeamName</p>
                             </div>
                         </div>
-
-                        <!-- Match Date and Stadium -->
-                        <p class="wightText"><span class="fw-bold">Date:</span> @match.MatchDate</p>
-                        @* <p><strong>Date:</strong> @match.MatchTime</p> *@
-
-
-                        <p class="wightText"><span class="fw-bold">Stadium</span> @match.Stadium.Name</p>
-                        <p class="blackText"><span class="fw-bold">Location:</span>@match.Stadium.Location</p>
-
+                        <hr class="bg-light" />
+                        <p class="match-info"><strong>Date:</strong> @match.MatchDate</p>
+                        <p class="match-info"><strong>Stadium:</strong> @match.Stadium.Name</p>
+                        <p class="match-info"><strong>Location:</strong> @match.Stadium.Location</p>
                         <div class="mb-3">
                             <label for="ticketSelect_@match.MatchId" class="form-label h5">Booked Tickets</label>
                             <select id="ticketSelect_@match.MatchId" class="form-select">
@@ -100,44 +108,7 @@
                                 }
                             </select>
                         </div>
-
-
-                        <!-- Buttons -->
-                        <div class="row mb-4 justify-content-center">
-                            <div class=" col-12">
-                                @* <form asp-action="AddToCart" asp-controller="Cart" class="d-flex  flex-column gap-3"> *@
-                                @*     <input type="hidden" name="MatchId" value="@match.MatchId" /> *@
-
-                                @*     <!-- Seat Number Input --> *@
-                                @*     <div class="form-group  " > *@
-                                @*         <p class="blackText">Enter seat number</p> *@
-                                @*         <input type="number" id="seatNumber" name="SeatNumber" class="form-control form-control-lg fw-bold" style=" border-color:black;background-color:rgba(255,255,255,.5);" placeholder="Enter seat number" required /> *@
-                                @*     </div> *@
-
-                                @*     <!-- Section Selection --> *@
-                                @*     <div class="form-group "> *@
-                                @*         <p class="blackText">Select a section</p> *@
-                                @*         <select id="section" name="section" class="form-select form-select-lg blackText" style="border-color:black;" required> *@
-
-                                @*             <option value="Section1">Section 1 - $@match.Section1Price</option> *@
-                                @*             <option value="Section2">Section 2 - $@match.Section2Price</option> *@
-                                @*             <option value="Section3">Section 3 - $@match.Section3Price</option> *@
-                                @*         </select> *@
-                                @*     </div> *@
-
-                                @*     <!-- Submit Button --> *@
-                                @*     <div class="d-flex justify-content-center "> *@
-                                @*         <button type="submit" class="btn  btn-lg col-auto fw-bold" style="background-color:#41d7a7cc;"> *@
-                                @*             <i class="bi bi-cart-plus"></i> Book Ticket *@
-                                @*         </button> *@
-                                @*     </div> *@
-                                @* </form> *@
-                                <a asp-action="Details" asp-controller="Home" asp-route-id="@match.MatchId" class="btn btn-primary">
-                                    Show Details
-                                </a>
-
-                            </div>
-                        </div>
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@match.MatchId" class="btn btn-custom mt-2">View Details</a>
                     </div>
                 </div>
             </div>

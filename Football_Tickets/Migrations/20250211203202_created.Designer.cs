@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Football_Tickets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250203175138_EditModelBooking")]
-    partial class EditModelBooking
+    [Migration("20250211203202_created")]
+    partial class created
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,9 @@ namespace Football_Tickets.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpireTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("SeatNumber")
                         .HasColumnType("int");

@@ -1,39 +1,4 @@
-﻿<style>
-    
-    .cartpageSection{
-        background: url('/images/ball.jpg') no-repeat center center/cover;
-      
-        border-radius:10px;
-    }
-
-    .cartTitle{
-        color:white;
-        font-weight:bold;
-        padding-top:40%;
-        font-size:30px;
-    }
-    .textStyle{
-        color:black;
-        font-weight:bold;
-        font-size:25px;
-    }
-
-    .bg-section{
-        background-color:rgba(240,240,240,.4);
-        border-radius:10px;
-    }
-
-    .ContinueShopping{
-        padding-top: 3%;
-        color: #003366;
-        font-weight: bold;
-        font-size: 15px;
-        background-color: #41d7a77d;
-        width: 200px;
-        height: 40px;
-    }
-</style>
-@model Football_Tickets.Models.ViewModels.CartWithTotalPriceVM
+﻿@model Football_Tickets.Models.ViewModels.CartWithTotalPriceVM
 
 @section Scripts {
     @if (TempData["message"] != null)
@@ -44,100 +9,121 @@
     }
 }
 
-<form method="post ">
-    <br />
-    <div class="card shadow border-0 cartpageSection">
-        <div class="card-header bg-secondary bg-gradient text-light ml-0 py-4 ">
-            <div class="row " style="padding-left:40%">
-                <div class="col-4">
-                    <p class="cartTitle">
-                        Shopping Cart
-                    </p>
-                </div>
+<style>
+    .cartpageSection {
+        background: url('/images/ball.jpg') no-repeat center center/cover;
+        border-radius: 10px;
+    }
 
+    .cartTitle {
+        color: white;
+        font-weight: bold;
+        padding-top: 40%;
+        font-size: 30px;
+    }
+
+    .textStyle {
+        color: black;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    .bg-section {
+        background-color: rgba(240,240,240,.4);
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .ContinueShopping {
+        padding-top: 3%;
+        color: #003366;
+        font-weight: bold;
+        font-size: 15px;
+        background-color: #41d7a77d;
+        width: 200px;
+        height: 40px;
+    }
+
+    cartTitle {
+        background: rgba(250,250,250,.5);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<form method="post">
+    <br />
+    <div class="card shadow border-0 cartpageSection  ">
+
+        <div class="card-body  ">
+            <div class="card-header bg-secondary  text-light ml-0 py-4 ">
+                <div class="row" style="padding-left: 40%">
+                    <div class="col-4">
+                        <p class="cartTitle ">Shopping Cart</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="card-body my-4 ">
-            <div class="row">
-            </div>
-            <div class="row mb-3 pb-3">
-                <div class="col-md-2 offset-md-1 ">
-                    <a href="/Home/Index" class="btn btn-outline-primary text-uppercase mb-5 btn-sm ContinueShopping">Continue Shopping</a>
+            <div class="row mb-3 pb-3  " style="background:rgba(250,250,250,.2);">
+                <div class="col-md-2 offset-md-1 pt-2">
+                    <a href="/Home/Index" class="btn btn-outline-primary text-uppercase mb-5 btn-sm ContinueShopping">
+                        Continue Shopping
+                    </a>
                 </div>
                 <div class="col-md-10 offset-md-1">
-
-
                     @foreach (var item in Model.Carts)
                     {
                         <div class="row border-bottom pb-3">
                             <div class="row mb-3 col-8 textStyle">
-                                <!-- Home Team Logo and Name -->
-                                <div class="col-4 text-right ">
-                                    <img src="~/Logo_Teams/@item.Match.HomeTeam.LogoUrl" alt="@item.Match.HomeTeam.LogoUrl" class="img-fluid " style="max-height: 50px;" />
+                                <div class="col-4 text-right">
+                                    <img src="~/Logo_Teams/@item.Match.HomeTeam.LogoUrl" alt="@item.Match.HomeTeam.LogoUrl" class="img-fluid" style="max-height: 50px;" />
                                     <p class="mt-2">@item.Match.HomeTeam.TeamName</p>
                                 </div>
-
-                                <!-- VS -->
-                                <div class="col-2 align-self-center">
-                                    <strong>VS</strong>
-                                </div>
-
-                                <!-- Away Team Logo and Name -->
+                                <div class="col-2 align-self-center"><strong>VS</strong></div>
                                 <div class="col-4 text-left ps-4">
-                                    <img src="~/Logo_Teams/@item.Match.AwayTeam.LogoUrl" alt="@item.Match.AwayTeam.LogoUrl" class="img-fluid " style="max-height: 50px;" />
+                                    <img src="~/Logo_Teams/@item.Match.AwayTeam.LogoUrl" alt="@item.Match.AwayTeam.LogoUrl" class="img-fluid" style="max-height: 50px;" />
                                     <p class="mt-2">@item.Match.AwayTeam.TeamName</p>
                                 </div>
                             </div>
 
-
-
-                            <div class="col-12  col-lg-5 text-center row textStyle">
+                            <div class="col-12 col-lg-5 text-center row textStyle">
                                 <div class="col-3 text-md-right pt-2 pt-md-4">
-                                    <p class="fw-bold ">
-
-
-                                        <span class="text-muted ">&nbsp;x&nbsp;</span>@item.Count
+                                    <p class="fw-bold">
+                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
                                     </p>
-
                                 </div>
-                                @* <div class="col-6 col-sm-4 col-lg-6 pt-2 textStyle"> *@
-                                @*     <div class="w-75 btn-group" role="group"> *@
-                                @*         <a href="/Cart/Increment?MatchId=@item.MatchId" class="btn btn-outline-primary bg-gradient py-2"> *@
-                                @*             <i class="bi bi-plus-square"></i> *@
-                                @*         </a> &nbsp; *@
-                                @*         <a href="/Cart/Decreament?MatchId=@item.MatchId" class="btn btn-outline-primary bg-gradient py-2"> *@
-                                @*             <i class="bi bi-dash-square"></i> *@
-                                @*         </a> *@
-                                @*     </div> *@
-
-                                @* </div> *@
-                                
                                 <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
                                     <a href="#" class="btn btn-danger delete-btn" data-matchid="@item.MatchId">
                                         <i class="bi bi-trash"></i>
                                     </a>
-
                                 </div>
                                 <div class="bg-section">
                                     <h5>Seat Number: @item.SeatNumber</h5>
                                     <h5>Section: @item.section</h5>
-                                    <a href="@Url.Action("EditSeat", "Cart", new { MatchId = item.MatchId })" class="btn btn-warning">Edit Seat & Section</a>
+                                    <a href="#" class="btn btn-warning edit-btn" data-matchid="@item.MatchId">
+                                        Edit Seat & Section
+                                    </a>
                                 </div>
                             </div>
-
                         </div>
-
                     }
-
-
                 </div>
             </div>
+
             <div class="card-footer bg-white bg-opacity-10 border-0">
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <ul class="list-group mb-4">
                             <li class="d-flex justify-content-between align-items-center">
-                                <h5 class="text-dark fw-semibold text-uppercase"> @Model.TotalPrice (USD)</h5>
+                                <h5 class="text-dark fw-semibold text-uppercase">@Model.TotalPrice (USD)</h5>
                                 <h4 class="text-dark fw-bolder">$$</h4>
                             </li>
                         </ul>
@@ -151,7 +137,6 @@
             </div>
         </div>
     </div>
-    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -171,6 +156,44 @@
     </div>
 </form>
 
+<!-- Edit Seat & Section Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Seat & Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="editModalContent">
+                    <!-- Edit form will be loaded here via AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var editButtons = document.querySelectorAll(".edit-btn");
+
+        editButtons.forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                var matchId = this.getAttribute("data-matchid");
+
+                fetch(`/Cart/EditSeat?MatchId=${matchId}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("editModalContent").innerHTML = data;
+                        var editModal = new bootstrap.Modal(document.getElementById("editModal"));
+                        editModal.show();
+                    })
+                    .catch(error => console.error("Error loading edit form:", error));
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var deleteButtons = document.querySelectorAll(".delete-btn");
@@ -187,7 +210,3 @@
         });
     });
 </script>
-
-
-
-
