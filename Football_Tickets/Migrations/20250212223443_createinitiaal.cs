@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Football_Tickets.Migrations
 {
     /// <inheritdoc />
-    public partial class created : Migration
+    public partial class createinitiaal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
